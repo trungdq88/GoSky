@@ -55,16 +55,18 @@ public class World {
         float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY
                 / (2 * -gravity.y);
         while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
-            int type = rand.nextFloat() > 0.8f ? Platform.PLATFORM_TYPE_MOVING
+            int type = rand.nextFloat() > Platform.PLATFORM_TYPE_MOVING_PERCENT ? Platform.PLATFORM_TYPE_MOVING
                     : Platform.PLATFORM_TYPE_STATIC;
+            float platformWidth = rand.nextFloat()  * (Platform.PLATFORM_WIDTH_MAX -
+                    Platform.PLATFORM_WIDTH_MIN) + Platform.PLATFORM_WIDTH_MIN;
             float x = rand.nextFloat()
-                    * (WORLD_WIDTH - Platform.PLATFORM_WIDTH)
-                    + Platform.PLATFORM_WIDTH / 2;
+                    * (WORLD_WIDTH - platformWidth)
+                    + platformWidth / 2;
 
-            Platform platform = new Platform(type, x, y);
+            Platform platform = new Platform(type, x, y, platformWidth);
             platforms.add(platform);
 
-            if (rand.nextFloat() > 0.9f
+            if (rand.nextFloat() > Platform.PLATFORM_TYPE_SPRING_PERCENT
                     && type != Platform.PLATFORM_TYPE_MOVING) {
                 Spring spring = new Spring(platform.position.x,
                         platform.position.y + Platform.PLATFORM_HEIGHT / 2
@@ -101,7 +103,7 @@ public class World {
         updateScore();
         if (bob.state != Bob.BOB_STATE_HIT)
             checkCollisions();
-        checkGameOver();
+//        checkGameOver();
     }
 
     private void updateScore() {
@@ -165,9 +167,10 @@ public class World {
                         .overlapRectangles(bob.bounds, platform.bounds)) {
                     bob.hitPlatform();
                     listener.jump();
-                    if (rand.nextFloat() > 0.5f) {
-                        platform.pulverize();
-                    }
+                    // May be the platform will be destroy.
+//                    if (rand.nextFloat() > 0.5f) {
+//                        platform.pulverize();
+//                    }
                     break;
                 }
             }

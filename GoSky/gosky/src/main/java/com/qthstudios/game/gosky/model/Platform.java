@@ -3,7 +3,9 @@ package com.qthstudios.game.gosky.model;
 import com.qthstudios.game.gosky.framework.DynamicGameObject;
 
 public class Platform extends DynamicGameObject {
-    public static final float PLATFORM_WIDTH = 2;
+    public static final float PLATFORM_WIDTH_MIN = 0.3f;
+    public static final float PLATFORM_WIDTH_MAX = 1.5f;
+
     public static final float PLATFORM_HEIGHT = 0.5f;
     public static final int PLATFORM_TYPE_STATIC = 0;
     public static final int PLATFORM_TYPE_MOVING = 1;
@@ -11,13 +13,15 @@ public class Platform extends DynamicGameObject {
     public static final int PLATFORM_STATE_PULVERIZING = 1;
     public static final float PLATFORM_PULVERIZE_TIME = 0.2f * 4;
     public static final float PLATFORM_VELOCITY = 2;
+    public static final float PLATFORM_TYPE_SPRING_PERCENT = 0.8f;
+    public static final float PLATFORM_TYPE_MOVING_PERCENT = 0.5f;
 
     int type;
     int state;
     float stateTime;
 
-    public Platform(int type, float x, float y) {
-        super(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+    public Platform(int type, float x, float y, float width) {
+        super(x, y, width, PLATFORM_HEIGHT);
         this.type = type;
         this.state = PLATFORM_STATE_NORMAL;
         this.stateTime = 0;
@@ -29,15 +33,15 @@ public class Platform extends DynamicGameObject {
     public void update(float deltaTime) {
         if(type == PLATFORM_TYPE_MOVING) {
             position.add(velocity.x * deltaTime, 0);
-            bounds.lowerLeft.set(position).sub(PLATFORM_WIDTH / 2, PLATFORM_HEIGHT / 2);
+            bounds.lowerLeft.set(position).sub(bounds.width / 2, PLATFORM_HEIGHT / 2);
 
-            if(position.x < PLATFORM_WIDTH / 2) {
+            if(position.x < bounds.width / 2) {
                 velocity.x = -velocity.x;
-                position.x = PLATFORM_WIDTH / 2;
+                position.x = bounds.width / 2;
             }
-            if(position.x > World.WORLD_WIDTH - PLATFORM_WIDTH / 2) {
+            if(position.x > World.WORLD_WIDTH - bounds.width / 2) {
                 velocity.x = -velocity.x;
-                position.x = World.WORLD_WIDTH - PLATFORM_WIDTH / 2;
+                position.x = World.WORLD_WIDTH - bounds.width / 2;
             }
         }
 

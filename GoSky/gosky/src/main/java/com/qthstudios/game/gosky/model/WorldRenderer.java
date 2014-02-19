@@ -25,8 +25,11 @@ public class WorldRenderer {
     }
 
     public void render() {
-        if(world.bob.position.y > cam.position.y )
+        if(world.bob.position.y > cam.position.y)
             cam.position.y = world.bob.position.y;
+        if (world.bob.position.y < cam.position.y - 6) {
+            cam.position.y = world.bob.position.y + 6;
+        }
         cam.setViewportAndMatrices();
         renderBackground();
         renderObjects();
@@ -83,7 +86,7 @@ public class WorldRenderer {
             }
 
             batcher.drawSprite(platform.position.x, platform.position.y,
-                    2, 0.5f, keyFrame);
+                    platform.bounds.width, 0.5f, keyFrame);
         }
     }
 
