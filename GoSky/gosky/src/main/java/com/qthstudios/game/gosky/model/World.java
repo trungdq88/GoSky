@@ -19,7 +19,7 @@ public class World {
     }
 
     public static final float WORLD_WIDTH = 10;
-    public static final float WORLD_HEIGHT = 15 * 20;
+    public static final float WORLD_HEIGHT = 100 * 20;
     public static final int WORLD_STATE_RUNNING = 0;
     public static final int WORLD_STATE_NEXT_LEVEL = 1;
     public static final int WORLD_STATE_GAME_OVER = 2;
@@ -28,8 +28,6 @@ public class World {
     public final Bob bob;
     public final List<Platform> platforms;
     public final List<Spring> springs;
-    public final List<Squirrel> squirrels;
-    public final List<Coin> coins;
     public Castle castle;
     public final WorldListener listener;
     public final Random rand;
@@ -42,8 +40,7 @@ public class World {
         this.bob = new Bob(5, 1);
         this.platforms = new ArrayList<Platform>();
         this.springs = new ArrayList<Spring>();
-        this.squirrels = new ArrayList<Squirrel>();
-        this.coins = new ArrayList<Coin>();
+//        this.squirrels = new ArrayList<Squirrel>();
         this.listener = listener;
         rand = new Random();
         generateLevel();
@@ -75,19 +72,19 @@ public class World {
                 springs.add(spring);
             }
 
-            if (y > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
-                Squirrel squirrel = new Squirrel(platform.position.x
-                        + rand.nextFloat(), platform.position.y
-                        + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
-                squirrels.add(squirrel);
-            }
+//            if (y > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
+//                Squirrel squirrel = new Squirrel(platform.position.x
+//                        + rand.nextFloat(), platform.position.y
+//                        + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
+//                squirrels.add(squirrel);
+//            }
 
-            if (rand.nextFloat() > 0.6f) {
-                Coin coin = new Coin(platform.position.x + rand.nextFloat(),
-                        platform.position.y + Coin.COIN_HEIGHT
-                                + rand.nextFloat() * 3);
-                coins.add(coin);
-            }
+//            if (rand.nextFloat() > 0.6f) {
+//                Coin coin = new Coin(platform.position.x + rand.nextFloat(),
+//                        platform.position.y + Coin.COIN_HEIGHT
+//                                + rand.nextFloat() * 3);
+//                coins.add(coin);
+//            }
 
             y += (maxJumpHeight - 0.5f);
             y -= rand.nextFloat() * (maxJumpHeight / 3);
@@ -99,11 +96,16 @@ public class World {
     public void update(float deltaTime, float accelX) {
         updateBob(deltaTime, accelX);
         updatePlatforms(deltaTime);
-        updateSquirrels(deltaTime);
-        updateCoins(deltaTime);
+//        updateSquirrels(deltaTime);
+//        updateCoins(deltaTime);
+        updateScore();
         if (bob.state != Bob.BOB_STATE_HIT)
             checkCollisions();
         checkGameOver();
+    }
+
+    private void updateScore() {
+        score = (int) bob.position.y;
     }
 
     private void updateBob(float deltaTime, float accelX) {
@@ -128,25 +130,25 @@ public class World {
         }
     }
 
-    private void updateSquirrels(float deltaTime) {
-        int len = squirrels.size();
-        for (int i = 0; i < len; i++) {
-            Squirrel squirrel = squirrels.get(i);
-            squirrel.update(deltaTime);
-        }
-    }
+//    private void updateSquirrels(float deltaTime) {
+//        int len = squirrels.size();
+//        for (int i = 0; i < len; i++) {
+//            Squirrel squirrel = squirrels.get(i);
+//            squirrel.update(deltaTime);
+//        }
+//    }
 
-    private void updateCoins(float deltaTime) {
-        int len = coins.size();
-        for (int i = 0; i < len; i++) {
-            Coin coin = coins.get(i);
-            coin.update(deltaTime);
-        }
-    }
+//    private void updateCoins(float deltaTime) {
+//        int len = coins.size();
+//        for (int i = 0; i < len; i++) {
+//            Coin coin = coins.get(i);
+//            coin.update(deltaTime);
+//        }
+//    }
 
     private void checkCollisions() {
         checkPlatformCollisions();
-        checkSquirrelCollisions();
+//        checkSquirrelCollisions();
         checkItemCollisions();
         checkCastleCollisions();
     }
@@ -172,34 +174,34 @@ public class World {
         }
     }
 
-    private void checkSquirrelCollisions() {
-        int len = squirrels.size();
-        for (int i = 0; i < len; i++) {
-            Squirrel squirrel = squirrels.get(i);
-            if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
-                bob.hitSquirrel();
-                listener.hit();
-            }
-        }
-    }
+//    private void checkSquirrelCollisions() {
+//        int len = squirrels.size();
+//        for (int i = 0; i < len; i++) {
+//            Squirrel squirrel = squirrels.get(i);
+//            if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
+//                bob.hitSquirrel();
+//                listener.hit();
+//            }
+//        }
+//    }
 
     private void checkItemCollisions() {
-        int len = coins.size();
-        for (int i = 0; i < len; i++) {
-            Coin coin = coins.get(i);
-            if (OverlapTester.overlapRectangles(bob.bounds, coin.bounds)) {
-                coins.remove(coin);
-                len = coins.size();
-                listener.coin();
-                score += Coin.COIN_SCORE;
-            }
-
-        }
+//        int len = coins.size();
+//        for (int i = 0; i < len; i++) {
+//            Coin coin = coins.get(i);
+//            if (OverlapTester.overlapRectangles(bob.bounds, coin.bounds)) {
+//                coins.remove(coin);
+//                len = coins.size();
+//                listener.coin();
+//                score += Coin.COIN_SCORE;
+//            }
+//
+//        }
 
         if (bob.velocity.y > 0)
             return;
 
-        len = springs.size();
+        int len = springs.size();
         for (int i = 0; i < len; i++) {
             Spring spring = springs.get(i);
             if (bob.position.y > spring.position.y) {

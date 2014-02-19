@@ -49,7 +49,7 @@ public class WorldRenderer {
         renderBob();
         renderPlatforms();
         renderItems();
-        renderSquirrels();
+//        renderSquirrels();
         renderCastle();
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
@@ -94,23 +94,23 @@ public class WorldRenderer {
             batcher.drawSprite(spring.position.x, spring.position.y, 1, 1, Assets.spring);
         }
 
-        len = world.coins.size();
-        for(int i = 0; i < len; i++) {
-            Coin coin = world.coins.get(i);
-            TextureRegion keyFrame = Assets.coinAnim.getKeyFrame(coin.stateTime, Animation.ANIMATION_LOOPING);
-            batcher.drawSprite(coin.position.x, coin.position.y, 1, 1, keyFrame);
-        }
+//        len = world.coins.size();
+//        for(int i = 0; i < len; i++) {
+//            Coin coin = world.coins.get(i);
+//            TextureRegion keyFrame = Assets.coinAnim.getKeyFrame(coin.stateTime, Animation.ANIMATION_LOOPING);
+//            batcher.drawSprite(coin.position.x, coin.position.y, 1, 1, keyFrame);
+//        }
     }
 
-    private void renderSquirrels() {
-        int len = world.squirrels.size();
-        for(int i = 0; i < len; i++) {
-            Squirrel squirrel = world.squirrels.get(i);
-            TextureRegion keyFrame = Assets.squirrelFly.getKeyFrame(squirrel.stateTime, Animation.ANIMATION_LOOPING);
-            float side = squirrel.velocity.x < 0?-1:1;
-            batcher.drawSprite(squirrel.position.x, squirrel.position.y, side * 1, 1, keyFrame);
-        }
-    }
+//    private void renderSquirrels() {
+//        int len = world.squirrels.size();
+//        for(int i = 0; i < len; i++) {
+//            Squirrel squirrel = world.squirrels.get(i);
+//            TextureRegion keyFrame = Assets.squirrelFly.getKeyFrame(squirrel.stateTime, Animation.ANIMATION_LOOPING);
+//            float side = squirrel.velocity.x < 0?-1:1;
+//            batcher.drawSprite(squirrel.position.x, squirrel.position.y, side * 1, 1, keyFrame);
+//        }
+//    }
 
     private void renderCastle() {
         Castle castle = world.castle;
