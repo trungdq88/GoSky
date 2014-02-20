@@ -142,10 +142,10 @@ public class GameScreen extends GLScreen {
 	    if(world.state == World.WORLD_STATE_GAME_OVER) {
 	        state = GAME_OVER;
 	        if(lastScore >= Settings.highscores[4])
-	            scoreString = "new highscore: " + lastScore;
+	            scoreString = "" + world.maxScore;
 	        else
-	            scoreString = "score: " + lastScore;
-	        Settings.addScore(lastScore);
+	            scoreString = "" + world.maxScore;
+	        Settings.addScore(world.maxScore);
 	        Settings.save(game.getFileIO());
 	    }
 	}
@@ -261,9 +261,18 @@ public class GameScreen extends GLScreen {
 	}
 	
 	private void presentGameOver() {
-	    batcher.drawSprite(160, 240, 160, 96, Assets.gameOver);        
-	    float scoreWidth = Assets.font.glyphWidth * scoreString.length();
-	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
+	    batcher.drawSprite(160, 380, 160, 96, Assets.gameOver);
+	    float scoreWidth = Assets.font.glyphWidth * scoreString.length() * scoreString.length();
+	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-220, 4);
+
+        float hightScoreString = Assets.font.glyphWidth * "best".length();
+        Assets.font.drawText(batcher, "best", 160 - hightScoreString / 2, 480-300);
+
+        float maxScoreWidth = Assets.font.glyphWidth
+                * (Settings.highscores[0] + "").length();
+        Assets.font.drawText(batcher, Settings.highscores[0] + "", 160 - maxScoreWidth / 2, 480-350, 2);
+
+
 	}
 
     @Override

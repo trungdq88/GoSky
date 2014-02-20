@@ -1,5 +1,7 @@
 package com.qthstudios.game.gosky.screen;
 
+import android.util.Log;
+
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.config.Settings;
 import com.qthstudios.game.gosky.framework.Screen;
@@ -33,9 +35,13 @@ public class GoSky extends GLGame {
     @Override
     public void onPause() {
         super.onPause();
-        if(Settings.soundEnabled)
-            Assets.music.pause();
+        Log.e("TRUNGDQ", "pause");
+        System.exit(0);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        // No exit app by this way
+        // super.onBackPressed();
+    }
 }

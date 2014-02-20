@@ -66,10 +66,6 @@ public class MainScreen extends GLScreen {
                 if(OverlapTester.pointInRectangle(soundBounds, touchPoint)) {
                     Assets.playSound(Assets.clickSound);
                     Settings.soundEnabled = !Settings.soundEnabled;
-                    if(Settings.soundEnabled)
-                        Assets.music.play();
-                    else
-                        Assets.music.pause();
                 }
             }
         }

@@ -1,5 +1,9 @@
 package com.qthstudios.game.gosky.model;
 
+import android.util.Log;
+
+import com.qthstudios.game.gosky.config.Assets;
+import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.math.OverlapTester;
 import com.qthstudios.game.gosky.framework.math.Vector2;
 
@@ -8,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 
 public class World {
+
+
     public interface WorldListener {
         public void jump();
 
@@ -27,6 +33,7 @@ public class World {
 
     public final Bob bob;
     public final List<Platform> platforms;
+    public final List<Float> platformsPositions;
     public final List<Spring> springs;
     public Castle castle;
     public final WorldListener listener;
@@ -34,17 +41,18 @@ public class World {
 
     public float heightSoFar;
     public int score;
+    public int maxScore;
     public int state;
 
     public World(WorldListener listener) {
         this.bob = new Bob(5, 1);
         this.platforms = new ArrayList<Platform>();
+        this.platformsPositions = new ArrayList<Float>();
         this.springs = new ArrayList<Spring>();
 //        this.squirrels = new ArrayList<Squirrel>();
         this.listener = listener;
         rand = new Random();
         generateLevel();
-
         this.heightSoFar = 0;
         this.score = 0;
         this.state = WORLD_STATE_RUNNING;
@@ -55,19 +63,32 @@ public class World {
         float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY
                 / (2 * -gravity.y);
         while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
-            int type = rand.nextFloat() > Platform.PLATFORM_TYPE_MOVING_PERCENT ? Platform.PLATFORM_TYPE_MOVING
-                    : Platform.PLATFORM_TYPE_STATIC;
-            float platformWidth = rand.nextFloat()  * (Platform.PLATFORM_WIDTH_MAX -
-                    Platform.PLATFORM_WIDTH_MIN) + Platform.PLATFORM_WIDTH_MIN;
-            float x = rand.nextFloat()
-                    * (WORLD_WIDTH - platformWidth)
-                    + platformWidth / 2;
+            int type;
+            float platformWidth;
+            float x;
+            // First platform always is a static & place in center & no spring
+            if (platforms.size() == 0) {
+                type = Platform.PLATFORM_TYPE_STATIC;
+                platformWidth = Platform.PLATFORM_WIDTH_MAX;
+                x = WORLD_WIDTH / 2;
+            } else {
+                // From the platform number 2, all will be random
+                type = rand.nextFloat() > Platform.PLATFORM_TYPE_MOVING_PERCENT ? Platform.PLATFORM_TYPE_MOVING
+                        : Platform.PLATFORM_TYPE_STATIC;
+                platformWidth = rand.nextFloat()  * (Platform.PLATFORM_WIDTH_MAX -
+                        Platform.PLATFORM_WIDTH_MIN) + Platform.PLATFORM_WIDTH_MIN;
+                x = rand.nextFloat()
+                        * (WORLD_WIDTH - platformWidth)
+                        + platformWidth / 2;
+            }
 
             Platform platform = new Platform(type, x, y, platformWidth);
+            platformsPositions.add(y);
             platforms.add(platform);
 
+            // Generate springs
             if (rand.nextFloat() > Platform.PLATFORM_TYPE_SPRING_PERCENT
-                    && type != Platform.PLATFORM_TYPE_MOVING) {
+                    && type != Platform.PLATFORM_TYPE_MOVING && platforms.size() > 1) {
                 Spring spring = new Spring(platform.position.x,
                         platform.position.y + Platform.PLATFORM_HEIGHT / 2
                                 + Spring.SPRING_HEIGHT / 2);
@@ -103,11 +124,19 @@ public class World {
         updateScore();
         if (bob.state != Bob.BOB_STATE_HIT)
             checkCollisions();
-//        checkGameOver();
+        checkGameOver();
     }
 
     private void updateScore() {
-        score = (int) bob.position.y;
+        for (int i = 0; i < platformsPositions.size(); ++i) {
+            if (platformsPositions.get(i) > bob.position.y) {
+                score = i - 1;
+                break;
+            }
+        }
+
+        if (maxScore < score) maxScore = score;
+
     }
 
     private void updateBob(float deltaTime, float accelX) {
@@ -167,7 +196,8 @@ public class World {
                         .overlapRectangles(bob.bounds, platform.bounds)) {
                     bob.hitPlatform();
                     listener.jump();
-                    // May be the platform will be destroy.
+                    // Destroy after touch
+                    platform.pulverize();
 //                    if (rand.nextFloat() > 0.5f) {
 //                        platform.pulverize();
 //                    }
@@ -223,8 +253,10 @@ public class World {
     }
 
     private void checkGameOver() {
-        if (heightSoFar - 7.5f > bob.position.y) {
+        if (bob.position.y < 0.7f) {
             state = WORLD_STATE_GAME_OVER;
+            bob.state = Bob.BOB_STATE_HIT;
+            Assets.playSound(Assets.hitSound);
         }
     }
 }

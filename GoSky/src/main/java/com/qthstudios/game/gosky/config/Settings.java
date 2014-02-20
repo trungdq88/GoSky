@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Settings {
     public static boolean soundEnabled = true;
-    public final static int[] highscores = new int[] { 100, 80, 50, 30, 10 };
+    public final static int[] highscores = new int[] { 0, 0, 0, 0, 0 };
     public final static String file = ".gosky";
 
     public static void load(FileIO files) {

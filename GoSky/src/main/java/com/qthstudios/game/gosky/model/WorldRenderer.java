@@ -38,17 +38,14 @@ public class WorldRenderer {
 
     public void renderBackground() {
 
-        // Log.e("TRUNGDQ", "campos: " + (cam.position.y * 32));
-
         for (int i = (int) ((cam.position.y * 32 - 480) / 480);
                 i < (int) ((cam.position.y * 32 + 2 * 480) / 480)
                 && i < Assets.backgroundRegions.size(); ++i) {
             if (i < 0) continue;
             LazyTextureRegion backgroundRegion = Assets.backgroundRegions.get(i);
-            // Log.e("TRUNGDQ", "topOffset: " + backgroundRegion.texture.contextTopOffset);
             batcher.beginBatch(backgroundRegion.texture);
-            // float backgroundHeight = Assets.background.fullHeight / 32;
-            batcher.drawSprite(FRUSTUM_WIDTH / 2, backgroundRegion.texture.contextTopOffset / 32 + FRUSTUM_HEIGHT / 2 - 1,
+            batcher.drawSprite(FRUSTUM_WIDTH / 2,
+                    (backgroundRegion.texture.contextTopOffset / 32 + FRUSTUM_HEIGHT / 2 - 1),
                     FRUSTUM_WIDTH, FRUSTUM_HEIGHT,
                     backgroundRegion);
             batcher.endBatch();
