@@ -39,10 +39,10 @@ public class Bob extends DynamicGameObject {
             }
         }
 
-        if(position.x < 0)
-            position.x = World.WORLD_WIDTH;
-        if(position.x > World.WORLD_WIDTH)
-            position.x = 0;
+        if(position.x < - BOB_WIDTH / 2)
+            position.x = World.WORLD_WIDTH + BOB_WIDTH / 2;
+        if(position.x > World.WORLD_WIDTH + BOB_WIDTH / 2)
+            position.x = - BOB_WIDTH / 2;
 
         stateTime += deltaTime;
     }

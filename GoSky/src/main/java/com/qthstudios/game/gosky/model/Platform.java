@@ -7,14 +7,17 @@ public class Platform extends DynamicGameObject {
     public static final float PLATFORM_WIDTH_MAX = 1.5f;
 
     public static final float PLATFORM_HEIGHT = 0.5f;
+
     public static final int PLATFORM_TYPE_STATIC = 0;
     public static final int PLATFORM_TYPE_MOVING = 1;
     public static final int PLATFORM_STATE_NORMAL = 0;
+
     public static final int PLATFORM_STATE_PULVERIZING = 1;
     public static final float PLATFORM_PULVERIZE_TIME = 0.2f * 4;
-    public static final float PLATFORM_VELOCITY = 2;
-    public static final float PLATFORM_TYPE_SPRING_PERCENT = 0.8f;
-    public static final float PLATFORM_TYPE_MOVING_PERCENT = 0.5f;
+    public static final float PLATFORM_VELOCITY_MIN = 2;
+    public static final float PLATFORM_VELOCITY_MAX = 4;
+    public static final float PLATFORM_TYPE_SPRING_PERCENT = 0f;
+    public static final float PLATFORM_TYPE_MOVING_PERCENT = 0.2f;
 
     int type;
     int state;
@@ -26,7 +29,7 @@ public class Platform extends DynamicGameObject {
         this.state = PLATFORM_STATE_NORMAL;
         this.stateTime = 0;
         if(type == PLATFORM_TYPE_MOVING) {
-            velocity.x = PLATFORM_VELOCITY;
+            velocity.x = (float) (Math.random() * PLATFORM_VELOCITY_MAX + PLATFORM_VELOCITY_MIN);
         }
     }
 

@@ -1,11 +1,8 @@
 package com.qthstudios.game.gosky.model;
 
-import android.util.Log;
-
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Camera2D;
-import com.qthstudios.game.gosky.framework.gl.LazyTexture;
 import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.gl.SpriteBatcher;
 import com.qthstudios.game.gosky.framework.gl.TextureRegion;

@@ -79,7 +79,7 @@ public class GameScreen extends GLScreen {
         resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
         quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
         lastScore = 0;
-        scoreString = "score: 0";
+        scoreString = "0";
         fpsCounter = new FPSCounter();
     }
 
@@ -241,12 +241,14 @@ public class GameScreen extends GLScreen {
 	
 	private void presentRunning() {
 	    batcher.drawSprite(320 - 32, 480 - 32, 64, 64, Assets.pause);
-	    Assets.font.drawText(batcher, scoreString, 16, 480-20);
+        float scoreWidth = Assets.font.glyphWidth * scoreString.length();
+	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
 	}
 	
 	private void presentPaused() {        
 	    batcher.drawSprite(160, 240, 192, 96, Assets.pauseMenu);
-	    Assets.font.drawText(batcher, scoreString, 16, 480-20);
+        float scoreWidth = Assets.font.glyphWidth * scoreString.length();
+	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
 	}
 	
 	private void presentLevelEnd() {
@@ -261,7 +263,7 @@ public class GameScreen extends GLScreen {
 	private void presentGameOver() {
 	    batcher.drawSprite(160, 240, 160, 96, Assets.gameOver);        
 	    float scoreWidth = Assets.font.glyphWidth * scoreString.length();
-	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-20);
+	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
 	}
 
     @Override

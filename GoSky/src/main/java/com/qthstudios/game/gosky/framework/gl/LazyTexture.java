@@ -29,7 +29,7 @@ public class LazyTexture extends Texture {
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
     protected void load() {
-        if (topOffset <= 0) return;
+        if (topOffset < 0) return;
         Log.e("TRUNGDQ", "load: " + topOffset);
         //
         GL10 gl = glGraphics.getGL();

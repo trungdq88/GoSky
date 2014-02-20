@@ -49,22 +49,46 @@ public class Assets {
     public static Sound coinSound;
     public static Sound clickSound;
 
-    public static boolean loadBackground(int pos) {
-        if (pos >= backgroundRegions.size() && (29280 - 480 - pos * 480 >= 0)) {
-            LazyTexture background = new LazyTexture(mGame, "background.jpg");;
-            background.contextTopOffset = pos * 480; /* Change this */
-            background.topOffset = 29280 - 480 - pos * 480;
-            background.reload();
-            backgrounds.add(background);
-            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+    public static boolean loadBackground(final int pos) {
+        if (pos >= backgroundRegions.size() && (48000 - 480 - pos * 480 >= 0)) {
 
-            Log.e("TRUNGDQ", "load pos true: " + pos);
+            // if (pos <= 1) {
+                LazyTexture background = new LazyTexture(mGame, "background.jpg");
+                background.contextTopOffset = pos * 480;
+                background.topOffset = 48000 - 480 - pos * 480;
+                background.reload();
+                backgrounds.add(background);
+                backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+
+                Log.e("TRUNGDQ", "load pos true: " + pos);
+//            } else {
+//                Thread t = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//
+//                            LazyTexture background = new LazyTexture(mGame, "background.jpg");
+//                            background.contextTopOffset = pos * 480;
+//                            background.topOffset = 29280 - 480 - pos * 480;
+//                            background.reload();
+//                            backgrounds.add(background);
+//                            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+//
+//                            Log.e("TRUNGDQ", "load pos true: " + pos);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//                t.start();
+//            }
             return true;
         } else {
 
             Log.e("TRUNGDQ", "load pos false: " + pos);
             return false;
         }
+
     }
 
     public static void load(GLGame game) {
@@ -115,7 +139,7 @@ public class Assets {
         music = game.getAudio().newMusic("music.mp3");
         music.setLooping(true);
         music.setVolume(0.5f);
-        if(Settings.soundEnabled)
+        if (Settings.soundEnabled)
             music.play();
         jumpSound = game.getAudio().newSound("jump.ogg");
         highJumpSound = game.getAudio().newSound("highjump.ogg");
@@ -129,12 +153,12 @@ public class Assets {
             background.reload();
         }
         items.reload();
-        if(Settings.soundEnabled)
+        if (Settings.soundEnabled)
             music.play();
     }
 
     public static void playSound(Sound sound) {
-        if(Settings.soundEnabled)
+        if (Settings.soundEnabled)
             sound.play(1);
     }
 
