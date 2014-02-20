@@ -19,7 +19,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by Dinh Quang Trung on 2/19/14.
  */
 public class LazyTexture extends Texture {
-    public int topOffset = 0;
+    public int topOffset = -1;
     public int contextTopOffset = 0;
 
     public LazyTexture(GLGame glGame, String fileName) {
@@ -29,6 +29,7 @@ public class LazyTexture extends Texture {
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
     protected void load() {
+        if (topOffset <= 0) return;
         Log.e("TRUNGDQ", "load: " + topOffset);
         //
         GL10 gl = glGraphics.getGL();

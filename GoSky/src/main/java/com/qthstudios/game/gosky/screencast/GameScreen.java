@@ -50,11 +50,17 @@ public class GameScreen extends GLScreen {
             @Override
             public void jump() {            
                 Assets.playSound(Assets.jumpSound);
+
+                // Lazy load background
+                Assets.loadBackground((int) (renderer.cam.position.y * 32 + 2 * 480) / 480);
             }
 
             @Override
             public void highJump() {
                 Assets.playSound(Assets.highJumpSound);
+
+                // Lazy load background
+                Assets.loadBackground((int) (renderer.cam.position.y * 32 + 2 * 480) / 480);
             }
 
             @Override

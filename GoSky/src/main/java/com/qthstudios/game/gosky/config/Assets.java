@@ -1,5 +1,7 @@
 package com.qthstudios.game.gosky.config;
 
+import android.util.Log;
+
 import com.qthstudios.game.gosky.framework.Music;
 import com.qthstudios.game.gosky.framework.Sound;
 import com.qthstudios.game.gosky.framework.gl.Animation;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assets {
+    private static GLGame mGame;
     private static List<LazyTexture> backgrounds = new ArrayList<LazyTexture>();
     public static List<LazyTextureRegion> backgroundRegions = new ArrayList<LazyTextureRegion>();
 
@@ -46,19 +49,30 @@ public class Assets {
     public static Sound coinSound;
     public static Sound clickSound;
 
-    public static void load(GLGame game) {
-
-        int i = 0;
-        while (i < 29280 - 480) {
-            LazyTexture background = new LazyTexture(game, "background.jpg");
-            background.contextTopOffset = i; /* Change this */
-            background.topOffset = 29280 - 480 - i;
+    public static boolean loadBackground(int pos) {
+        if (pos >= backgroundRegions.size() && (29280 - 480 - pos * 480 >= 0)) {
+            LazyTexture background = new LazyTexture(mGame, "background.jpg");;
+            background.contextTopOffset = pos * 480; /* Change this */
+            background.topOffset = 29280 - 480 - pos * 480;
             background.reload();
             backgrounds.add(background);
-            i += 480;
             backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
-        }
 
+            Log.e("TRUNGDQ", "load pos true: " + pos);
+            return true;
+        } else {
+
+            Log.e("TRUNGDQ", "load pos false: " + pos);
+            return false;
+        }
+    }
+
+    public static void load(GLGame game) {
+        mGame = game;
+        loadBackground(0);
+        loadBackground(1);
+//        int i = 0;
+//        while (loadBackground(i++)){}
 
         items = new Texture(game, "items.png");
         mainMenu = new TextureRegion(items, 0, 224, 300, 110);
