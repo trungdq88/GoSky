@@ -44,7 +44,37 @@ public class SpriteBatcher {
         vertices.draw(GL10.GL_TRIANGLES, 0, numSprites * 6);
         vertices.unbind();
     }
-    
+
+    public void drawSprite(float x, float y, float width, float height, LazyTextureRegion region) {
+        float halfWidth = width / 2;
+        float halfHeight = height / 2;
+        float x1 = x - halfWidth;
+        float y1 = y - halfHeight;
+        float x2 = x + halfWidth;
+        float y2 = y + halfHeight;
+
+        verticesBuffer[bufferIndex++] = x1;
+        verticesBuffer[bufferIndex++] = y1;
+        verticesBuffer[bufferIndex++] = region.u1;
+        verticesBuffer[bufferIndex++] = region.v2;
+
+        verticesBuffer[bufferIndex++] = x2;
+        verticesBuffer[bufferIndex++] = y1;
+        verticesBuffer[bufferIndex++] = region.u2;
+        verticesBuffer[bufferIndex++] = region.v2;
+
+        verticesBuffer[bufferIndex++] = x2;
+        verticesBuffer[bufferIndex++] = y2;
+        verticesBuffer[bufferIndex++] = region.u2;
+        verticesBuffer[bufferIndex++] = region.v1;
+
+        verticesBuffer[bufferIndex++] = x1;
+        verticesBuffer[bufferIndex++] = y2;
+        verticesBuffer[bufferIndex++] = region.u1;
+        verticesBuffer[bufferIndex++] = region.v1;
+
+        numSprites++;
+    }
     public void drawSprite(float x, float y, float width, float height, TextureRegion region) {
         float halfWidth = width / 2;
         float halfHeight = height / 2;

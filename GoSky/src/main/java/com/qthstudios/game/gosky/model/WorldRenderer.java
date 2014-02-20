@@ -1,8 +1,12 @@
 package com.qthstudios.game.gosky.model;
 
+import android.util.Log;
+
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Camera2D;
+import com.qthstudios.game.gosky.framework.gl.LazyTexture;
+import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.gl.SpriteBatcher;
 import com.qthstudios.game.gosky.framework.gl.TextureRegion;
 import com.qthstudios.game.gosky.framework.impl.GLGraphics;
@@ -36,11 +40,21 @@ public class WorldRenderer {
     }
 
     public void renderBackground() {
-        batcher.beginBatch(Assets.background);
-        batcher.drawSprite(cam.position.x, cam.position.y,
-                FRUSTUM_WIDTH, FRUSTUM_HEIGHT,
-                Assets.backgroundRegion);
-        batcher.endBatch();
+//        Log.e("TRUNGDQ", "backgrounds: " + Assets.backgroundRegions.size());
+        Log.e("TRUNGDQ", "campos: " + (cam.position.y * 32));
+        for (int i = (int) ((cam.position.y * 32 - 480) / 480);
+                i < (int) ((cam.position.y * 32 + 2 * 480) / 480)
+                && i < Assets.backgroundRegions.size(); ++i) {
+            if (i < 0) continue;
+            LazyTextureRegion backgroundRegion = Assets.backgroundRegions.get(i);
+            Log.e("TRUNGDQ", "topOffset: " + backgroundRegion.texture.contextTopOffset);
+            batcher.beginBatch(backgroundRegion.texture);
+            // float backgroundHeight = Assets.background.fullHeight / 32;
+            batcher.drawSprite(FRUSTUM_WIDTH / 2, backgroundRegion.texture.contextTopOffset / 32 + FRUSTUM_HEIGHT / 2 - 1,
+                    FRUSTUM_WIDTH, FRUSTUM_HEIGHT,
+                    backgroundRegion);
+            batcher.endBatch();
+        }
     }
 
     public void renderObjects() {

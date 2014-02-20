@@ -8,6 +8,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
+
 import com.qthstudios.game.gosky.framework.FileIO;
 import com.qthstudios.game.gosky.framework.impl.GLGame;
 import com.qthstudios.game.gosky.framework.impl.GLGraphics;
@@ -29,7 +30,7 @@ public class Texture {
         load();
     }
     
-    private void load() {
+    protected void load() {
         GL10 gl = glGraphics.getGL();
         int[] textureIds = new int[1];
         gl.glGenTextures(1, textureIds, 0);
@@ -50,7 +51,7 @@ public class Texture {
             throw new RuntimeException("Couldn't load texture '" + fileName +"'", e);
         } finally {
             if(in != null)
-                try { in.close(); } catch (IOException e) { }
+                try { in.close(); } catch (IOException ignored) { }
         }
     }
     

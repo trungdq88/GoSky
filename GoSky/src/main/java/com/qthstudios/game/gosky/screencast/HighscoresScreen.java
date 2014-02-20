@@ -65,9 +65,10 @@ public class HighscoresScreen extends GLScreen {
         guiCam.setViewportAndMatrices();
         
         gl.glEnable(GL10.GL_TEXTURE_2D);
-        
-        batcher.beginBatch(Assets.background);
-        batcher.drawSprite(160, 240, 320, 480, Assets.backgroundRegion);
+
+
+        batcher.beginBatch(Assets.backgroundRegions.get(0).texture);
+        batcher.drawSprite(160, 240, 320, 480, Assets.backgroundRegions.get(0));
         batcher.endBatch();
         
         gl.glEnable(GL10.GL_BLEND);

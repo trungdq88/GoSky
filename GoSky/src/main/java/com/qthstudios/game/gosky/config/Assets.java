@@ -4,13 +4,18 @@ import com.qthstudios.game.gosky.framework.Music;
 import com.qthstudios.game.gosky.framework.Sound;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Font;
+import com.qthstudios.game.gosky.framework.gl.LazyTexture;
+import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.gl.Texture;
 import com.qthstudios.game.gosky.framework.gl.TextureRegion;
 import com.qthstudios.game.gosky.framework.impl.GLGame;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Assets {
-    public static Texture background;
-    public static TextureRegion backgroundRegion;
+    private static List<LazyTexture> backgrounds = new ArrayList<LazyTexture>();
+    public static List<LazyTextureRegion> backgroundRegions = new ArrayList<LazyTextureRegion>();
 
     public static Texture items;
     public static TextureRegion mainMenu;
@@ -42,8 +47,18 @@ public class Assets {
     public static Sound clickSound;
 
     public static void load(GLGame game) {
-        background = new Texture(game, "background.png");
-        backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
+
+        int i = 0;
+        while (i < 29280 - 480) {
+            LazyTexture background = new LazyTexture(game, "background.jpg");
+            background.contextTopOffset = i; /* Change this */
+            background.topOffset = 29280 - 480 - i;
+            background.reload();
+            backgrounds.add(background);
+            i += 480;
+            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+        }
+
 
         items = new Texture(game, "items.png");
         mainMenu = new TextureRegion(items, 0, 224, 300, 110);
@@ -96,7 +111,9 @@ public class Assets {
     }
 
     public static void reload() {
-        background.reload();
+        for (LazyTexture background : backgrounds) {
+            background.reload();
+        }
         items.reload();
         if(Settings.soundEnabled)
             music.play();
