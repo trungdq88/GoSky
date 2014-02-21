@@ -23,6 +23,8 @@ public class Texture {
     public int width;
     public int height;
 
+    public Texture() {}
+
     public Texture(GLGame glGame, String fileName) {
         this.glGraphics = glGame.getGLGraphics();
         this.fileIO = glGame.getFileIO();
