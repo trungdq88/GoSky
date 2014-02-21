@@ -1,8 +1,9 @@
 package com.qthstudios.game.gosky.config;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 
-import com.qthstudios.game.gosky.framework.Music;
 import com.qthstudios.game.gosky.framework.Sound;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Font;
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assets {
-    private static GLGame mGame;
+    private static int BACKGROUND_FULL_HEIGHT = 48000;
+
+    public static GLGame mGame;
     private static List<LazyTexture> backgrounds = new ArrayList<LazyTexture>();
     public static List<LazyTextureRegion> backgroundRegions = new ArrayList<LazyTextureRegion>();
 
@@ -49,38 +52,16 @@ public class Assets {
     public static Sound clickSound;
 
     public static boolean loadBackground(final int pos) {
-        if (pos >= backgroundRegions.size() && (48000 - 480 - pos * 480 >= 0)) {
+        if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
+            final LazyTexture background = new LazyTexture(mGame, "background.jpg");
 
-            // if (pos <= 1) {
-                LazyTexture background = new LazyTexture(mGame, "background.jpg");
-                background.contextTopOffset = pos * 480;
-                background.topOffset = 48000 - 480 - pos * 480;
-                background.reload();
-                backgrounds.add(background);
-                backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+            background.contextTopOffset = pos * 480;
+            background.topOffset = BACKGROUND_FULL_HEIGHT - 480 - pos * 480;
+            background.reload();
+            backgrounds.add(background);
+            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
 
-                Log.e("TRUNGDQ", "load pos true: " + pos);
-//            } else {
-//                Thread t = new Thread() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//
-//                            LazyTexture background = new LazyTexture(mGame, "background.jpg");
-//                            background.contextTopOffset = pos * 480;
-//                            background.topOffset = 29280 - 480 - pos * 480;
-//                            background.reload();
-//                            backgrounds.add(background);
-//                            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
-//
-//                            Log.e("TRUNGDQ", "load pos true: " + pos);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                t.start();
-//            }
+            Log.e("TRUNGDQ", "load pos true: " + pos);
             return true;
         } else {
 
@@ -92,10 +73,10 @@ public class Assets {
 
     public static void load(GLGame game) {
         mGame = game;
-        loadBackground(0);
-        loadBackground(1);
-//        int i = 0;
-//        while (loadBackground(i++)){}
+
+        for (int i = 0; i < 2; ++i) {
+            loadBackground(i);
+        }
 
         items = new Texture(game, "items.png");
         mainMenu = new TextureRegion(items, 0, 224, 300, 110);
@@ -153,5 +134,4 @@ public class Assets {
         if (Settings.soundEnabled)
             sound.play(1);
     }
-
 }

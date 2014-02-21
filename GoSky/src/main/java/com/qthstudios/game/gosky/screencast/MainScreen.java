@@ -79,10 +79,11 @@ public class MainScreen extends GLScreen {
 
         gl.glEnable(GL10.GL_TEXTURE_2D);
 
-
-        batcher.beginBatch(Assets.backgroundRegions.get(0).texture);
-        batcher.drawSprite(160, 240, 320, 480, Assets.backgroundRegions.get(0));
-        batcher.endBatch();
+        if (Assets.backgroundRegions.size() > 0) {
+            batcher.beginBatch(Assets.backgroundRegions.get(0).texture);
+            batcher.drawSprite(160, 240, 320, 480, Assets.backgroundRegions.get(0));
+            batcher.endBatch();
+        }
 
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
