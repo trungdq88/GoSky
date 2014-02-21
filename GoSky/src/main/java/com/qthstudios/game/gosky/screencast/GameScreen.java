@@ -265,8 +265,8 @@ public class GameScreen extends GLScreen {
 	    float scoreWidth = Assets.font.glyphWidth * scoreString.length() * scoreString.length();
 	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-220, 4);
 
-        float hightScoreString = Assets.font.glyphWidth * "best".length();
-        Assets.font.drawText(batcher, "best", 160 - hightScoreString / 2, 480-300);
+        float hightScoreStringWidth = Assets.font.glyphWidth * "best".length();
+        Assets.font.drawText(batcher, "best", 160 - hightScoreStringWidth / 2, 480-300, 1.5f);
 
         float maxScoreWidth = Assets.font.glyphWidth
                 * (Settings.highscores[0] + "").length();

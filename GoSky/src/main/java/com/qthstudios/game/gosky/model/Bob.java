@@ -25,14 +25,15 @@ public class Bob extends DynamicGameObject {
         position.add(velocity.x * deltaTime, velocity.y * deltaTime);
         bounds.lowerLeft.set(position).sub(bounds.width / 2, bounds.height / 2);
 
-        if(velocity.y > 0 && state != BOB_STATE_HIT) {
-            if(state != BOB_STATE_JUMP) {
-                state = BOB_STATE_JUMP;
-                stateTime = 0;
-            }
-        }
+//        if(velocity.y > 0 && state != BOB_STATE_HIT) {
+//            if(state != BOB_STATE_JUMP) {
+//                state = BOB_STATE_JUMP;
+//                stateTime = 0;
+//            }
+//        }
 
-        if(velocity.y < 0 && state != BOB_STATE_HIT) {
+//        if(velocity.y < 0 && state != BOB_STATE_HIT) {
+        if(state != BOB_STATE_HIT) {
             if(state != BOB_STATE_FALL) {
                 state = BOB_STATE_FALL;
                 stateTime = 0;

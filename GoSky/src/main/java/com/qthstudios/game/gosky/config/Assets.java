@@ -114,7 +114,7 @@ public class Assets {
                 new TextureRegion(items, 64, 192, 64, 16),
                 new TextureRegion(items, 64, 208, 64, 16));
 
-        font = new Font(items, 224, 0, 16, 16, 20);
+        font = new Font(items, 225, 0, 16, 16, 20);
 
         jumpSound = game.getAudio().newSound("jump.ogg");
         highJumpSound = game.getAudio().newSound("highjump.ogg");
