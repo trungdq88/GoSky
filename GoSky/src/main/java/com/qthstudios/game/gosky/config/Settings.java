@@ -14,6 +14,7 @@ public class Settings {
         try {
             in = new BufferedReader(new InputStreamReader(files.readFile(file)));
             soundEnabled = Boolean.parseBoolean(in.readLine());
+            soundEnabled = true;
             for(int i = 0; i < 5; i++) {
                 highscores[i] = Integer.parseInt(in.readLine());
             }

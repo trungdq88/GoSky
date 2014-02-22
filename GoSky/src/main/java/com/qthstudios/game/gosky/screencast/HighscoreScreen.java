@@ -50,7 +50,7 @@ public class HighscoreScreen extends GLScreen {
             
             if(event.type == TouchEvent.TOUCH_UP) {
                 if(OverlapTester.pointInRectangle(backBounds, touchPoint)) {
-                    game.setScreen(new MainMenu(game));
+                    game.setScreen(new MainScreen(game));
                     return;
                 }
             }

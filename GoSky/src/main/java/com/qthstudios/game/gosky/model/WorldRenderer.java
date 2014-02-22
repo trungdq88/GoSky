@@ -1,7 +1,5 @@
 package com.qthstudios.game.gosky.model;
 
-import android.util.Log;
-
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Camera2D;
@@ -82,9 +80,10 @@ public class WorldRenderer {
             default:
                 keyFrame = Assets.bobHit;
         }
-
-        float side = world.bob.velocity.x < 0? -1: 1;
-//        float angle = world.bob.velocity.y * 8; // 45 = 0, 90 = 45
+        float side = 1;
+        if (Math.abs(world.bob.velocity.x) > 0.5) {
+            side = world.bob.velocity.x < 0 ? -1: 1;
+        }
 
         double r = Math.abs(world.bob.velocity.y / world.bob.velocity.x);
 
@@ -105,8 +104,8 @@ public class WorldRenderer {
             angle = (float) (- 90 - Math.toDegrees(Math.atan(1 / r)));
         }
 
-        angle += 45* side;
-        batcher.drawSprite(world.bob.position.x, world.bob.position.y, 1 , side, angle, keyFrame);
+        // angle += 45* side;
+        batcher.drawSprite(world.bob.position.x, world.bob.position.y, 1.3f , side * 1.3f, angle, keyFrame);
     }
 
     private void renderPlatforms() {

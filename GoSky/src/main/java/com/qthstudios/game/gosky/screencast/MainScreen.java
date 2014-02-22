@@ -18,20 +18,16 @@ public class MainScreen extends GLScreen {
 
     Camera2D guiCam;
     SpriteBatcher batcher;
-    Rectangle soundBounds;
     Rectangle playBounds;
     Rectangle highscoresBounds;
-    Rectangle helpBounds;
     Vector2 touchPoint;
 
     public MainScreen(Game game) {
         super(game);
         guiCam = new Camera2D(glGraphics, 320, 480);
         batcher = new SpriteBatcher(glGraphics, 100);
-        soundBounds = new Rectangle(0, 0, 64, 64);
-        playBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
-        highscoresBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
-        helpBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
+        playBounds =            new Rectangle(160 - 150, 200 + 18, 300, 54);
+        highscoresBounds =      new Rectangle(160 - 150, 200 - 36, 300, 36);
         touchPoint = new Vector2();
     }
 
@@ -55,17 +51,8 @@ public class MainScreen extends GLScreen {
                 }
                 if(OverlapTester.pointInRectangle(highscoresBounds, touchPoint)) {
                     Assets.playSound(Assets.clickSound);
-                    game.setScreen(new HighscoresScreen(game));
+                    game.setScreen(new HighscoreScreen(game));
                     return;
-                }
-                if(OverlapTester.pointInRectangle(helpBounds, touchPoint)) {
-                    Assets.playSound(Assets.clickSound);
-                    game.setScreen(new HelpScreen(game));
-                    return;
-                }
-                if(OverlapTester.pointInRectangle(soundBounds, touchPoint)) {
-                    Assets.playSound(Assets.clickSound);
-                    Settings.soundEnabled = !Settings.soundEnabled;
                 }
             }
         }
@@ -92,7 +79,7 @@ public class MainScreen extends GLScreen {
 
         batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
         batcher.drawSprite(160, 200, 300, 110, Assets.mainMenu);
-        batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
+        // batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
 
         batcher.endBatch();
 

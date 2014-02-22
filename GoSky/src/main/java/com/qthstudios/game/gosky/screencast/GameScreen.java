@@ -169,7 +169,7 @@ public class GameScreen extends GLScreen {
 	        
 	        if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
 	            Assets.playSound(Assets.clickSound);
-	            game.setScreen(new MainMenuScreen(game));
+	            game.setScreen(new MainScreen(game));
 	            return;
 	        
 	        }
@@ -197,7 +197,7 @@ public class GameScreen extends GLScreen {
 	        TouchEvent event = touchEvents.get(i);
 	        if(event.type != TouchEvent.TOUCH_UP)
 	            continue;
-	        game.setScreen(new MainMenuScreen(game));
+	        game.setScreen(new MainScreen(game));
 	    }
 	}
 
