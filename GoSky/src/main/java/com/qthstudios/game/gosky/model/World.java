@@ -1,9 +1,6 @@
 package com.qthstudios.game.gosky.model;
 
-import android.util.Log;
-
 import com.qthstudios.game.gosky.config.Assets;
-import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.math.OverlapTester;
 import com.qthstudios.game.gosky.framework.math.Vector2;
 
@@ -25,7 +22,7 @@ public class World {
     }
 
     public static final float WORLD_WIDTH = 10;
-    public static final float WORLD_HEIGHT = 99 * 15;
+    public static final float WORLD_HEIGHT = 199 * 15;
     public static final int WORLD_STATE_RUNNING = 0;
     public static final int WORLD_STATE_NEXT_LEVEL = 1;
     public static final int WORLD_STATE_GAME_OVER = 2;
@@ -122,7 +119,7 @@ public class World {
 //        updateSquirrels(deltaTime);
 //        updateCoins(deltaTime);
         updateScore();
-        if (bob.state != Bob.BOB_STATE_HIT)
+        if (bob.state != Bob.BOB_STATE_HIT && bob.velocity.y > -25)
             checkCollisions();
         checkGameOver();
     }
@@ -178,10 +175,10 @@ public class World {
 //    }
 
     private void checkCollisions() {
-        checkPlatformCollisions();
+        checkPlatformCollisions(); //
 //        checkSquirrelCollisions();
-        checkItemCollisions();
-        checkCastleCollisions();
+        checkItemCollisions(); //
+        checkCastleCollisions(); //
     }
 
     private void checkPlatformCollisions() {

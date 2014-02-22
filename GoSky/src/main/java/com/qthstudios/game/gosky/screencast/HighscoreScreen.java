@@ -49,10 +49,9 @@ public class HighscoreScreen extends GLScreen {
             guiCam.touchToWorld(touchPoint);
             
             if(event.type == TouchEvent.TOUCH_UP) {
-                if(OverlapTester.pointInRectangle(backBounds, touchPoint)) {
-                    game.setScreen(new MainScreen(game));
-                    return;
-                }
+                Assets.playSound(Assets.clickSound);
+                game.setScreen(new MainScreen(game));
+                return;
             }
         }
     }
@@ -71,17 +70,15 @@ public class HighscoreScreen extends GLScreen {
         
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        
+
         batcher.beginBatch(Assets.items);
-        batcher.drawSprite(160, 360, 300, 33, Assets.highScoresRegion);
         
         float y = 240;
         for(int i = 4; i >= 0; i--) {
             Assets.font.drawText(batcher, highScores[i], xOffset, y);
             y += Assets.font.glyphHeight;
         }
-        
-        batcher.drawSprite(32, 32, 64, 64, Assets.arrow);
+
         batcher.endBatch();
         
         gl.glDisable(GL10.GL_BLEND);

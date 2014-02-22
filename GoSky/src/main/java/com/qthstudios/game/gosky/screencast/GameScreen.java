@@ -52,7 +52,7 @@ public class GameScreen extends GLScreen {
                 Assets.playSound(Assets.jumpSound);
 
                 // Lazy load background
-                Assets.loadBackground((int) (renderer.cam.position.y * 32 + 2 * 480) / 480);
+                Assets.loadBackground((int) (renderer.cam.position.y / 2 * 32 + 2 * 480) / 480);
             }
 
             @Override
@@ -60,7 +60,7 @@ public class GameScreen extends GLScreen {
                 Assets.playSound(Assets.highJumpSound);
 
                 // Lazy load background
-                Assets.loadBackground((int) (renderer.cam.position.y * 32 + 2 * 480) / 480);
+                Assets.loadBackground((int) (renderer.cam.position.y / 2 * 32 + 2 * 480) / 480);
             }
 
             @Override
@@ -252,8 +252,8 @@ public class GameScreen extends GLScreen {
 	}
 	
 	private void presentLevelEnd() {
-	    String topText = "the princess is ...";
-	    String bottomText = "in another castle!";
+	    String topText = "oh no! this is...";
+	    String bottomText = "a time machine!";
 	    float topWidth = Assets.font.glyphWidth * topText.length();
 	    float bottomWidth = Assets.font.glyphWidth * bottomText.length();
 	    Assets.font.drawText(batcher, topText, 160 - topWidth / 2, 480 - 40);
@@ -277,8 +277,7 @@ public class GameScreen extends GLScreen {
 
     @Override
     public void pause() {
-        if(state == GAME_RUNNING)
-            state = GAME_PAUSED;
+        Settings.save(game.getFileIO());
     }
 
     @Override

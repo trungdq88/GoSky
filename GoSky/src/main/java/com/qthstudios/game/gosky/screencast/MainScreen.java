@@ -22,12 +22,15 @@ public class MainScreen extends GLScreen {
     Rectangle highscoresBounds;
     Vector2 touchPoint;
 
+    boolean isPlayButtonPressing = false;
+    boolean isScoreButtonPressing = false;
+
     public MainScreen(Game game) {
         super(game);
         guiCam = new Camera2D(glGraphics, 320, 480);
         batcher = new SpriteBatcher(glGraphics, 100);
-        playBounds =            new Rectangle(160 - 150, 200 + 18, 300, 54);
-        highscoresBounds =      new Rectangle(160 - 150, 200 - 36, 300, 36);
+        playBounds =            new Rectangle(160 - 150, 150, 300, 100);
+        highscoresBounds =      new Rectangle(160 - 150, 0, 300, 50);
         touchPoint = new Vector2();
     }
 
@@ -40,6 +43,9 @@ public class MainScreen extends GLScreen {
         for(int i = 0; i < len; i++) {
             Input.TouchEvent event = touchEvents.get(i);
             if(event.type == Input.TouchEvent.TOUCH_UP) {
+                isPlayButtonPressing = false;
+                isScoreButtonPressing = false;
+
                 touchPoint.set(event.x, event.y);
                 // use design coordinate
                 guiCam.touchToWorld(touchPoint);
@@ -53,6 +59,19 @@ public class MainScreen extends GLScreen {
                     Assets.playSound(Assets.clickSound);
                     game.setScreen(new HighscoreScreen(game));
                     return;
+                }
+            }
+
+            if(event.type == Input.TouchEvent.TOUCH_DOWN) {
+                touchPoint.set(event.x, event.y);
+                // use design coordinate
+                guiCam.touchToWorld(touchPoint);
+
+                if(OverlapTester.pointInRectangle(playBounds, touchPoint)) {
+                    isPlayButtonPressing = true;
+                }
+                if(OverlapTester.pointInRectangle(highscoresBounds, touchPoint)) {
+                    isScoreButtonPressing = true;
                 }
             }
         }
@@ -78,7 +97,8 @@ public class MainScreen extends GLScreen {
         batcher.beginBatch(Assets.items);
 
         batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
-        batcher.drawSprite(160, 200, 300, 110, Assets.mainMenu);
+        batcher.drawSprite(160, 200 + (isPlayButtonPressing ? -3 : 0), 209, 59, Assets.mainMenu);
+        batcher.drawSprite(160, 40 + (isScoreButtonPressing ? -2 : 0), 209, 32, Assets.highScoresRegion);
         // batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
 
         batcher.endBatch();
