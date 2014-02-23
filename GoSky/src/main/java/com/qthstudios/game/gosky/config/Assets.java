@@ -130,7 +130,7 @@ public class Assets {
         highJumpSound = game.getAudio().newSound("highjump.ogg");
         hitSound = game.getAudio().newSound("hit.ogg");
         hitTopSound = game.getAudio().newSound("hittop.wav");
-        clickSound = game.getAudio().newSound("click.ogg");
+        clickSound = game.getAudio().newSound("click.wav");
         nyan1 = game.getAudio().newMusic("nyan1.mp3");
         nyan2 = game.getAudio().newMusic("nyan2.mp3");
         nyan1.setVolume(50);
