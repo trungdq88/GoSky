@@ -52,6 +52,13 @@ public class WorldRenderer {
         }
     }
 
+    public void renderStars() {
+        for (Star star : world.stars) {
+            batcher.drawSprite(star.position.x, star.position.y, Star.STAR_WIDTH / 32, Star.STAR_HEIGHT / 32,
+                    Assets.star.getKeyFrame(star.stateTime, Animation.ANIMATION_LOOPING));
+        }
+    }
+
     public void renderObjects() {
         GL10 gl = glGraphics.getGL();
         gl.glEnable(GL10.GL_BLEND);
@@ -61,7 +68,7 @@ public class WorldRenderer {
         renderBob();
         renderPlatforms();
         renderItems();
-//        renderSquirrels();
+        renderStars();
         renderCastle();
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);

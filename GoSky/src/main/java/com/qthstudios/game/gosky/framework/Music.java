@@ -18,4 +18,12 @@ public interface Music {
     public boolean isLooping();
 
     public void dispose();
+
+    public void setMusicEndListener(MusicEndListener musicEndListener);
+
+    public void seekTo(int i);
+
+    public interface MusicEndListener {
+        public void onMusicEnd();
+    }
 }

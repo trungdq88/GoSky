@@ -10,6 +10,7 @@ import com.qthstudios.game.gosky.framework.impl.GLScreen;
 import com.qthstudios.game.gosky.framework.math.OverlapTester;
 import com.qthstudios.game.gosky.framework.math.Rectangle;
 import com.qthstudios.game.gosky.framework.math.Vector2;
+import com.qthstudios.game.gosky.model.Star;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.List;

@@ -1,5 +1,7 @@
 package com.qthstudios.game.gosky.model;
 
+import android.util.Log;
+
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.framework.math.OverlapTester;
 import com.qthstudios.game.gosky.framework.math.Vector2;
@@ -32,6 +34,7 @@ public class World {
     public final List<Platform> platforms;
     public final List<Float> platformsPositions;
     public final List<Spring> springs;
+    public final List<Star> stars;
     public Castle castle;
     public final WorldListener listener;
     public final Random rand;
@@ -41,12 +44,14 @@ public class World {
     public int maxScore;
     public int state;
 
+    public float stateTime;
+
     public World(WorldListener listener) {
         this.bob = new Bob(5, 1);
         this.platforms = new ArrayList<Platform>();
         this.platformsPositions = new ArrayList<Float>();
         this.springs = new ArrayList<Spring>();
-//        this.squirrels = new ArrayList<Squirrel>();
+        stars = new ArrayList<Star>();
         this.listener = listener;
         rand = new Random();
         generateLevel();
@@ -87,7 +92,7 @@ public class World {
             if (rand.nextFloat() > Platform.PLATFORM_TYPE_SPRING_PERCENT
                     && type != Platform.PLATFORM_TYPE_MOVING && platforms.size() > 1) {
                 Spring spring = new Spring(platform.position.x,
-                        platform.position.y + Platform.PLATFORM_HEIGHT / 2
+                        platform.position.y + Platform.PLATFORM_HEIGHT * 0.75f
                                 + Spring.SPRING_HEIGHT / 2);
                 springs.add(spring);
             }
@@ -119,9 +124,43 @@ public class World {
 //        updateSquirrels(deltaTime);
 //        updateCoins(deltaTime);
         updateScore();
-        if (bob.state != Bob.BOB_STATE_HIT && bob.velocity.y > -25)
+        if (bob.state != Bob.BOB_STATE_HIT && bob.velocity.y > -25) {
             checkCollisions();
+        }
+        if (bob.velocity.y < -25 && !bob.isDead) {
+            bob.isDead = true;
+            Assets.nyan1.play();
+        }
+        updateStars(deltaTime);
         checkGameOver();
+    }
+
+    private void updateStars(float deltaTime) {
+        if (bob.isDead) {
+            // Update common state time (use for all stars)
+            stateTime += deltaTime;
+//            Log.e("TRUNGDQ", "stateTime: " + stateTime + " first con: " + ((int) stateTime % Star.STAR_SPEED));
+            // Add new stars
+//            if ((int) (stateTime * 100) % Star.STAR_SPEED == 0 && !starAddedFlag) {
+//                starAddedFlag = true;
+                stars.add(new Star(
+                        (float) (bob.position.x + (Math.random() * 3) - 1.5),
+                        (float) (bob.position.y + (Math.random() * 3) - 1.5),
+                        Star.STAR_WIDTH, Star.STAR_HEIGHT));
+                if (stars.size() > Star.STAR_MAX_COUNT) {
+                    stars.remove(0);
+                }
+//            } else {
+//                if ((int) (stateTime * 100) % Star.STAR_SPEED != 0) {
+//                starAddedFlag = false;
+//                }
+//            }
+
+            // Update stars state time;
+            for (Star star : stars) {
+                star.stateTime += deltaTime;
+            }
+        }
     }
 
     private void updateScore() {
@@ -225,7 +264,6 @@ public class World {
 //                listener.coin();
 //                score += Coin.COIN_SCORE;
 //            }
-//
 //        }
 
         if (bob.velocity.y > 0)
@@ -234,7 +272,7 @@ public class World {
         int len = springs.size();
         for (int i = 0; i < len; i++) {
             Spring spring = springs.get(i);
-            if (bob.position.y > spring.position.y) {
+            if (bob.position.y > spring.position.y - spring.bounds.height / 2) {
                 if (OverlapTester.overlapRectangles(bob.bounds, spring.bounds)) {
                     bob.hitSpring();
                     listener.highJump();
@@ -253,7 +291,15 @@ public class World {
         if (bob.position.y < 0.7f) {
             state = WORLD_STATE_GAME_OVER;
             bob.state = Bob.BOB_STATE_HIT;
+            bob.isDead = false;
+            stars.clear();
             Assets.playSound(Assets.hitSound);
+            if (Assets.nyan1.isPlaying()) {
+                Assets.nyan1.stop();
+            }
+            if (Assets.nyan2.isPlaying()) {
+                Assets.nyan2.stop();
+            }
         }
     }
 }

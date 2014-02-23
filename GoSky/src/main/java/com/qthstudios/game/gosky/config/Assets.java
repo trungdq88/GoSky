@@ -1,9 +1,8 @@
 package com.qthstudios.game.gosky.config;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 
+import com.qthstudios.game.gosky.framework.Music;
 import com.qthstudios.game.gosky.framework.Sound;
 import com.qthstudios.game.gosky.framework.gl.Animation;
 import com.qthstudios.game.gosky.framework.gl.Font;
@@ -44,6 +43,7 @@ public class Assets {
     public static Animation squirrelFly;
     public static TextureRegion platform;
     public static Animation brakingPlatform;
+    public static Animation star;
     public static Font font;
 
     public static Sound jumpSound;
@@ -51,6 +51,8 @@ public class Assets {
     public static Sound hitSound;
     public static Sound coinSound;
     public static Sound clickSound;
+    public static Music nyan2;
+    public static Music nyan1;
 
     public static boolean loadBackground(final int pos) {
         if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
@@ -75,7 +77,7 @@ public class Assets {
     public static void load(GLGame game) {
         mGame = game;
 
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 3; ++i) {
             loadBackground(i);
         }
 
@@ -114,6 +116,13 @@ public class Assets {
                 new TextureRegion(items, 64, 176, 64, 16),
                 new TextureRegion(items, 64, 192, 64, 16),
                 new TextureRegion(items, 64, 208, 64, 16));
+        star = new Animation(0.1f,
+                new TextureRegion(items, 0     , 0, 21, 21),
+                new TextureRegion(items, 21    , 0, 21, 21),
+                new TextureRegion(items, 21 * 2, 0, 21, 21),
+                new TextureRegion(items, 21 * 3, 0, 21, 21),
+                new TextureRegion(items, 21 * 4, 0, 21, 21),
+                new TextureRegion(items, 21 * 5, 0, 21, 21));
 
         font = new Font(items, 225, 0, 16, 16, 20);
 
@@ -122,6 +131,18 @@ public class Assets {
         hitSound = game.getAudio().newSound("hit.ogg");
         coinSound = game.getAudio().newSound("coin.ogg");
         clickSound = game.getAudio().newSound("click.ogg");
+        nyan1 = game.getAudio().newMusic("nyan1.mp3");
+        nyan2 = game.getAudio().newMusic("nyan2.mp3");
+        nyan1.setVolume(50);
+        nyan2.setVolume(50);
+        nyan1.setMusicEndListener(new Music.MusicEndListener() {
+
+            @Override
+            public void onMusicEnd() {
+                nyan2.setLooping(true);
+                nyan2.play();
+            }
+        });
     }
 
     public static void reload() {

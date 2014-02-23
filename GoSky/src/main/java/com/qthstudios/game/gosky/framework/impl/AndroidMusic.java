@@ -10,7 +10,7 @@ import com.qthstudios.game.gosky.framework.Music;
 public class AndroidMusic implements Music, OnCompletionListener {
     MediaPlayer mediaPlayer;
     boolean isPrepared = false;
-
+    MusicEndListener musicEndListener;
     public AndroidMusic(AssetFileDescriptor assetDescriptor) {
         mediaPlayer = new MediaPlayer();
         try {
@@ -30,6 +30,16 @@ public class AndroidMusic implements Music, OnCompletionListener {
         if (mediaPlayer.isPlaying())
             mediaPlayer.stop();
         mediaPlayer.release();
+    }
+
+    @Override
+    public void setMusicEndListener(MusicEndListener musicEndListener) {
+        this.musicEndListener = musicEndListener;
+    }
+
+    @Override
+    public void seekTo(int i) {
+        mediaPlayer.seekTo(i);
     }
 
     @Override
@@ -62,6 +72,7 @@ public class AndroidMusic implements Music, OnCompletionListener {
             synchronized (this) {
                 if (!isPrepared)
                     mediaPlayer.prepare();
+                mediaPlayer.seekTo(0);
                 mediaPlayer.start();
             }
         } catch (IllegalStateException e) {
@@ -92,6 +103,9 @@ public class AndroidMusic implements Music, OnCompletionListener {
     @Override
     public void onCompletion(MediaPlayer arg0) {
         synchronized (this) {
+            if (musicEndListener != null) {
+                musicEndListener.onMusicEnd();
+            }
             isPrepared = false;
         }
     }
