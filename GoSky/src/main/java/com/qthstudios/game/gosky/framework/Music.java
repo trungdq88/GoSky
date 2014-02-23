@@ -1,11 +1,15 @@
 package com.qthstudios.game.gosky.framework;
 
 public interface Music {
+    int getCurrentSeekPosition();
+
     public void play();
 
     public void stop();
 
     public void pause();
+
+    public void resume();
 
     public void setLooping(boolean looping);
 

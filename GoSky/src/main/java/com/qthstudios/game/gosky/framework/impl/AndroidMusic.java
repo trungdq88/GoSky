@@ -5,12 +5,15 @@ import java.io.IOException;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.util.Log;
+
 import com.qthstudios.game.gosky.framework.Music;
 
 public class AndroidMusic implements Music, OnCompletionListener {
     MediaPlayer mediaPlayer;
     boolean isPrepared = false;
     MusicEndListener musicEndListener;
+
     public AndroidMusic(AssetFileDescriptor assetDescriptor) {
         mediaPlayer = new MediaPlayer();
         try {
@@ -59,8 +62,14 @@ public class AndroidMusic implements Music, OnCompletionListener {
 
     @Override
     public void pause() {
-        if (mediaPlayer.isPlaying())
+        if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
+        }
+    }
+
+    @Override
+    public int getCurrentSeekPosition() {
+        return mediaPlayer.getCurrentPosition();
     }
 
     @Override
@@ -81,6 +90,14 @@ public class AndroidMusic implements Music, OnCompletionListener {
             e.printStackTrace();
         }
     }
+    @Override
+    public void resume() {
+        try {
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void setLooping(boolean isLooping) {
@@ -94,6 +111,7 @@ public class AndroidMusic implements Music, OnCompletionListener {
 
     @Override
     public void stop() {
+        mediaPlayer.seekTo(0);
         mediaPlayer.stop();
         synchronized (this) {
             isPrepared = false;

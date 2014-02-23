@@ -21,6 +21,8 @@ public class World {
         public void hit();
 
         public void coin();
+
+        public void hitTop();
     }
 
     public static final float WORLD_WIDTH = 10;
@@ -221,25 +223,29 @@ public class World {
     }
 
     private void checkPlatformCollisions() {
-        if (bob.velocity.y > 0)
-            return;
+//        if (bob.velocity.y == 0)
+//            return;
 
         int len = platforms.size();
         for (int i = 0; i < len; i++) {
             Platform platform = platforms.get(i);
-            if (bob.position.y > platform.position.y) {
                 if (OverlapTester
                         .overlapRectangles(bob.bounds, platform.bounds)) {
-                    bob.hitPlatform();
-                    listener.jump();
-                    // Destroy after touch
-                    platform.pulverize();
-//                    if (rand.nextFloat() > 0.5f) {
-//                        platform.pulverize();
-//                    }
+                    if (bob.position.y > platform.position.y) {
+                        Log.e("TRUNGDQ", "UP:       bob y: " + bob.position.y + " | platform y: " + platform.position.y);
+                        bob.position.y = platform.position.y + platform.bounds.height / 2 + bob.bounds.height / 2 - 0.1f;
+                        bob.hitPlatform();
+                        listener.jump();
+                        // Destroy after touch
+                        platform.pulverize();
+                    } else if (bob.position.y <= platform.position.y) {
+                        Log.e("TRUNGDQ", "DOWN:     bob y: " + bob.position.y + " | platform y: " + platform.position.y);
+                        bob.position.y = platform.position.y - platform.bounds.height / 2 - bob.bounds.height / 2 - 0.1f;
+                        bob.hitPlatformTop();
+                        listener.hitTop();
+                    }
                     break;
                 }
-            }
         }
     }
 

@@ -35,7 +35,6 @@ public class GoSky extends GLGame {
     @Override
     public void onPause() {
         super.onPause();
-        System.exit(0);
     }
 
     @Override

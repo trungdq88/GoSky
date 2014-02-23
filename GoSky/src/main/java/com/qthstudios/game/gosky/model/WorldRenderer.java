@@ -111,6 +111,10 @@ public class WorldRenderer {
             angle = (float) (- 90 - Math.toDegrees(Math.atan(1 / r)));
         }
 
+        if (world.bob.velocity.x == 0) {
+            angle = 90 * (world.bob.velocity.y > 0 ? 1 : -1);
+        }
+
         // angle += 45* side;
         batcher.drawSprite(world.bob.position.x, world.bob.position.y, 1.3f , side * 1.3f, angle, keyFrame);
     }

@@ -35,7 +35,6 @@ public class GameScreen extends GLScreen {
     WorldRenderer renderer;
     Rectangle pauseBounds;
     Rectangle resumeBounds;
-    Rectangle quitBounds;
     int lastScore;
     String scoreString;    
     FPSCounter fpsCounter;
@@ -45,7 +44,7 @@ public class GameScreen extends GLScreen {
         state = GAME_READY;
         guiCam = new Camera2D(glGraphics, 320, 480);
         touchPoint = new Vector2();
-        batcher = new SpriteBatcher(glGraphics, 1000);
+        batcher = new SpriteBatcher(glGraphics, 5000); // 5 thousands sprite per batch~
         worldListener = new WorldListener() {
             @Override
             public void jump() {            
@@ -70,14 +69,18 @@ public class GameScreen extends GLScreen {
 
             @Override
             public void coin() {
-                Assets.playSound(Assets.coinSound);
-            }                      
+                Assets.playSound(Assets.hitTopSound);
+            }
+
+            @Override
+            public void hitTop() {
+                Assets.playSound(Assets.hitTopSound);
+            }
         };
         world = new World(worldListener);
         renderer = new WorldRenderer(glGraphics, batcher, world);
         pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);
-        resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
-        quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
+        resumeBounds = new Rectangle(160 - 96, 200, 192, 72);
         lastScore = 0;
         scoreString = "0";
         fpsCounter = new FPSCounter();
@@ -126,6 +129,12 @@ public class GameScreen extends GLScreen {
 	        
 	        if(OverlapTester.pointInRectangle(pauseBounds, touchPoint)) {
 	            Assets.playSound(Assets.clickSound);
+                if (Assets.nyan1.isPlaying()) {
+                    Assets.nyan1.pause();
+                }
+                if (Assets.nyan2.isPlaying()) {
+                    Assets.nyan2.pause();
+                }
 	            state = GAME_PAUSED;
 	            return;
 	        }            
@@ -164,14 +173,13 @@ public class GameScreen extends GLScreen {
 	        if(OverlapTester.pointInRectangle(resumeBounds, touchPoint)) {
 	            Assets.playSound(Assets.clickSound);
 	            state = GAME_RUNNING;
+                if (Assets.nyan1.getCurrentSeekPosition() > 0) {
+                    Assets.nyan1.resume();
+                }
+                if (Assets.nyan2.getCurrentSeekPosition() > 0) {
+                    Assets.nyan2.resume();
+                }
 	            return;
-	        }
-	        
-	        if(OverlapTester.pointInRectangle(quitBounds, touchPoint)) {
-	            Assets.playSound(Assets.clickSound);
-	            game.setScreen(new MainScreen(game));
-	            return;
-	        
 	        }
 	    }
 	}
@@ -254,7 +262,7 @@ public class GameScreen extends GLScreen {
 	    batcher.drawSprite(160, 240, 192, 96, Assets.pauseMenu);
         float scoreWidth = Assets.font.glyphWidth * scoreString.length();
 	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
-	}
+    }
 	
 	private void presentLevelEnd() {
 	    String topText = "oh no! this is...";

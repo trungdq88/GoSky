@@ -49,7 +49,7 @@ public class Assets {
     public static Sound jumpSound;
     public static Sound highJumpSound;
     public static Sound hitSound;
-    public static Sound coinSound;
+    public static Sound hitTopSound;
     public static Sound clickSound;
     public static Music nyan2;
     public static Music nyan1;
@@ -129,7 +129,7 @@ public class Assets {
         jumpSound = game.getAudio().newSound("jump.ogg");
         highJumpSound = game.getAudio().newSound("highjump.ogg");
         hitSound = game.getAudio().newSound("hit.ogg");
-        coinSound = game.getAudio().newSound("coin.ogg");
+        hitTopSound = game.getAudio().newSound("hittop.wav");
         clickSound = game.getAudio().newSound("click.ogg");
         nyan1 = game.getAudio().newMusic("nyan1.mp3");
         nyan2 = game.getAudio().newMusic("nyan2.mp3");
