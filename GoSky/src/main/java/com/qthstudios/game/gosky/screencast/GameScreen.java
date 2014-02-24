@@ -250,13 +250,15 @@ public class GameScreen extends GLScreen {
     }
 	
 	private void presentReady() {
-	    batcher.drawSprite(160, 240, 192, 32, Assets.ready);
-	}
+        batcher.drawSprite(160, 240, 153, 102, Assets.howtoplay);
+        batcher.drawSprite(160, 240 - 100, 192, 32, Assets.ready);
+
+    }
 	
 	private void presentRunning() {
 	    batcher.drawSprite(320 - 32, 480 - 100, 64, 64, Assets.pause);
         float scoreWidth = Assets.font.glyphWidth * scoreString.length();
-	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
+	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-100, 2);
 	}
 	
 	private void presentPaused() {        

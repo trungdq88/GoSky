@@ -30,6 +30,7 @@ public class Assets {
     public static TextureRegion mainMenu;
     public static TextureRegion pauseMenu;
     public static TextureRegion ready;
+    public static TextureRegion howtoplay;
     public static TextureRegion gameOver;
     public static TextureRegion highScoresRegion;
     public static TextureRegion logo;
@@ -61,9 +62,9 @@ public class Assets {
         if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
             final LazyTexture background = new LazyTexture(mGame, "background.jpg");
 
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
+//            Thread t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
 
                     background.contextTopOffset = pos * 480;
                     background.topOffset = BACKGROUND_FULL_HEIGHT - 480 - pos * 480;
@@ -72,9 +73,9 @@ public class Assets {
                     backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
 
                     Log.e("TRUNGDQ", "load pos true: " + pos);
-                }
-            });
-            t.start();
+//                }
+//            });
+//            t.start();
             return true;
         } else {
 
@@ -98,6 +99,7 @@ public class Assets {
         mainMenu = new TextureRegion(items, 45, 255, 209, 59);
         pauseMenu = new TextureRegion(items, 224, 128, 192, 96);
         ready = new TextureRegion(items, 320, 224, 192, 32);
+        howtoplay = new TextureRegion(items, 350, 340, 153, 102);
         gameOver = new TextureRegion(items, 352, 256, 160, 96);
         highScoresRegion = new TextureRegion(Assets.items, 45, 315, 209, 32);
         logo = new TextureRegion(items, 0, 352, 274, 142);
@@ -158,9 +160,9 @@ public class Assets {
         });
 
         // Big things come last
-        for (int i = 0; i < 2; ++i) {
-            loadBackground(i);
-        }
+//        for (int i = 0; i < 2; ++i) {
+//            loadBackground(i);
+//        }
     }
 
 

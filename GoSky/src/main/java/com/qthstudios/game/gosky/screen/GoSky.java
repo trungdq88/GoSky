@@ -38,6 +38,8 @@ public class GoSky extends GLGame {
         if(firstTimeCreate) {
             Settings.load(getFileIO());
             Assets.load(GoSky.this);
+            Assets.loadBackground(0);
+            Assets.loadBackground(1);
             firstTimeCreate = false;
         } else {
             Assets.reload();
