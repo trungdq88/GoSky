@@ -4,23 +4,24 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.qthstudios.game.gosky.R;
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.config.Settings;
 import com.qthstudios.game.gosky.framework.Screen;
 import com.qthstudios.game.gosky.framework.impl.GLGame;
 import com.qthstudios.game.gosky.screencast.MainScreen;
 import com.startapp.android.publish.StartAppAd;
+import com.startapp.android.publish.banner.Banner;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class GoSky extends GLGame {
+public class GoSky extends GLGame implements BannerController{
     public final String DEV_ID = "101352520";
     public final String APP_ID = "202676613";
     public boolean firstTimeCreate = true;
     private StartAppAd startAppAd = new StartAppAd(this);
-
-
+    public Banner startAppBanner;
 
     @Override
     public Screen getStartScreen() {
@@ -80,6 +81,30 @@ public class GoSky extends GLGame {
         StartAppAd.init(this, DEV_ID, APP_ID);
 //        StartAppSearch.init(this, DEV_ID, APP_ID);
 //        StartAppSearch.showSearchBox(this);
+        startAppBanner = ((Banner) findViewById(R.id.startAppBanner));
+    }
+
+    @Override
+    public void showBanner() {
+        if (startAppBanner != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    startAppBanner.showBanner();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void hideBanner() {
+        if (startAppBanner != null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    startAppBanner.hideBanner();            }
+            });
+        }
     }
 
     @Override

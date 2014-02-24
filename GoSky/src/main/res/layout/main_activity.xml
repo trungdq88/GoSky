@@ -13,6 +13,7 @@
 
         </LinearLayout>
     <com.startapp.android.publish.banner.Banner
+        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:id="@+id/startAppBanner"
         android:layout_width="wrap_content"

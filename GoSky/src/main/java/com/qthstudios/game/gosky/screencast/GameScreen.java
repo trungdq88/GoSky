@@ -12,6 +12,8 @@ import com.qthstudios.game.gosky.framework.math.Rectangle;
 import com.qthstudios.game.gosky.framework.math.Vector2;
 import com.qthstudios.game.gosky.model.World;
 import com.qthstudios.game.gosky.model.WorldRenderer;
+import com.qthstudios.game.gosky.screen.BannerController;
+import com.qthstudios.game.gosky.screen.GoSky;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.List;
@@ -38,9 +40,11 @@ public class GameScreen extends GLScreen {
     int lastScore;
     String scoreString;    
     FPSCounter fpsCounter;
+    Game _game;
     
     public GameScreen(Game game) {
         super(game);
+        _game = game;
         state = GAME_READY;
         guiCam = new Camera2D(glGraphics, 320, 480);
         touchPoint = new Vector2();
@@ -79,7 +83,7 @@ public class GameScreen extends GLScreen {
         };
         world = new World(worldListener);
         renderer = new WorldRenderer(glGraphics, batcher, world);
-        pauseBounds = new Rectangle(320- 64, 480- 100, 64, 64);
+        pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);
         resumeBounds = new Rectangle(160 - 96, 200, 192, 72);
         lastScore = 0;
         scoreString = "0";
@@ -113,6 +117,7 @@ public class GameScreen extends GLScreen {
 	private void updateReady() {
 	    if(game.getInput().getTouchEvents().size() > 0) {
 	        state = GAME_RUNNING;
+            ((BannerController)_game).hideBanner();
 	    }
 	}
 	
@@ -156,6 +161,7 @@ public class GameScreen extends GLScreen {
 	            scoreString = "" + world.maxScore;
 	        Settings.addScore(world.maxScore);
 	        Settings.save(game.getFileIO());
+            ((BannerController)_game).showBanner();
 	    }
 	}
 	
@@ -256,7 +262,7 @@ public class GameScreen extends GLScreen {
     }
 	
 	private void presentRunning() {
-	    batcher.drawSprite(320 - 32, 480 - 100, 64, 64, Assets.pause);
+	    batcher.drawSprite(320 - 32, 480 - 32, 64, 64, Assets.pause);
         float scoreWidth = Assets.font.glyphWidth * scoreString.length();
 	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-100, 2);
 	}
