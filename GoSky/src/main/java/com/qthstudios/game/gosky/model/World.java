@@ -293,6 +293,7 @@ public class World {
             bob.state = Bob.BOB_STATE_HIT;
             bob.isDead = false;
             stars.clear();
+
             Assets.playSound(Assets.hitSound);
             if (Assets.nyan1.isPlaying()) {
                 Assets.nyan1.stop();

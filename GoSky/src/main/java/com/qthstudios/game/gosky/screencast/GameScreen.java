@@ -79,7 +79,7 @@ public class GameScreen extends GLScreen {
         };
         world = new World(worldListener);
         renderer = new WorldRenderer(glGraphics, batcher, world);
-        pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);
+        pauseBounds = new Rectangle(320- 64, 480- 100, 64, 64);
         resumeBounds = new Rectangle(160 - 96, 200, 192, 72);
         lastScore = 0;
         scoreString = "0";
@@ -206,6 +206,7 @@ public class GameScreen extends GLScreen {
                 TouchEvent event = touchEvents.get(i);
                 if(event.type != TouchEvent.TOUCH_UP)
                     continue;
+                Assets.playSound(Assets.clickSound);
 	        game.setScreen(new MainScreen(game));
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
@@ -253,7 +254,7 @@ public class GameScreen extends GLScreen {
 	}
 	
 	private void presentRunning() {
-	    batcher.drawSprite(320 - 32, 480 - 32, 64, 64, Assets.pause);
+	    batcher.drawSprite(320 - 32, 480 - 100, 64, 64, Assets.pause);
         float scoreWidth = Assets.font.glyphWidth * scoreString.length();
 	    Assets.font.drawText(batcher, scoreString, 160 - scoreWidth / 2, 480-80, 2);
 	}

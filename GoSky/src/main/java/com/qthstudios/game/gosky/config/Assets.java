@@ -124,7 +124,7 @@ public class Assets {
                 new TextureRegion(items, 0, 160, 32, 32),
                 new TextureRegion(items, 32, 160, 32, 32));
         platform = new TextureRegion(items, 64, 160, 64, 16);
-        brakingPlatform = new Animation(0.2f,
+        brakingPlatform = new Animation(0.4f,
                 new TextureRegion(items, 64, 160, 64, 16),
                 new TextureRegion(items, 64, 176, 64, 16),
                 new TextureRegion(items, 64, 192, 64, 16),

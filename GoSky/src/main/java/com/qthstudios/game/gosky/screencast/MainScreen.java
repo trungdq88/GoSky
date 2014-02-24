@@ -97,7 +97,7 @@ public class MainScreen extends GLScreen {
         if (Assets.items != null) {
             batcher.beginBatch(Assets.items);
 
-            batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
+            batcher.drawSprite(160, 480 - 50 - 71, 274, 142, Assets.logo);
             batcher.drawSprite(160, 200 + (isPlayButtonPressing ? -3 : 0), 209, 59, Assets.mainMenu);
             batcher.drawSprite(160, 40 + (isScoreButtonPressing ? -2 : 0), 209, 32, Assets.highScoresRegion);
             // batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);

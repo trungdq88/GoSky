@@ -36,3 +36,20 @@
 
 # For Google Analytics
 -keep public class com.google.** {*;}
+
+# For Start App
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-keep class com.searchboxsdk.** {
+*;
+}
+-keep class com.startapp.android.eula.** {
+*;
+}
+-keep class com.startapp.** {
+*;
+}
+-keepattributes Exceptions, InnerClasses, Signature, Deprecated,  SourceFile,
+LineNumberTable, *Annotation*, EnclosingMethod
+-dontwarn android.webkit.JavascriptInterface
+-dontwarn com.searchboxsdk.android.**
+-dontwarn com.startapp.**

@@ -1,8 +1,5 @@
 package com.qthstudios.game.gosky.framework.impl;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -10,20 +7,20 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.view.SurfaceView;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
+import com.qthstudios.game.gosky.R;
 import com.qthstudios.game.gosky.framework.Audio;
 import com.qthstudios.game.gosky.framework.FileIO;
 import com.qthstudios.game.gosky.framework.Game;
 import com.qthstudios.game.gosky.framework.Graphics;
 import com.qthstudios.game.gosky.framework.Input;
 import com.qthstudios.game.gosky.framework.Screen;
-import com.qthstudios.game.gosky.R;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 public abstract class GLGame extends Activity implements Game, Renderer {
     enum GLGameState {
@@ -57,7 +54,7 @@ public abstract class GLGame extends Activity implements Game, Renderer {
 
         // SurfaceView gameScreen = (SurfaceView) findViewById(R.id.gameScreen);
         setContentView(R.layout.main_activity);
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.mainLayout);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         layout.addView(glView);
 
         
