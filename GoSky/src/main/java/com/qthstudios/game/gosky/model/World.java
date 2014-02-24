@@ -1,7 +1,5 @@
 package com.qthstudios.game.gosky.model;
 
-import android.util.Log;
-
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.framework.math.OverlapTester;
 import com.qthstudios.game.gosky.framework.math.Vector2;
@@ -32,12 +30,12 @@ public class World {
     public static final int WORLD_STATE_GAME_OVER = 2;
     public static final Vector2 gravity = new Vector2(0, -12);
 
-    public final Bob bob;
+    public final Cat cat;
     public final List<Platform> platforms;
     public final List<Float> platformsPositions;
     public final List<Spring> springs;
     public final List<Star> stars;
-    public Castle castle;
+    public BlackHole blackHole;
     public final WorldListener listener;
     public final Random rand;
 
@@ -49,7 +47,7 @@ public class World {
     public float stateTime;
 
     public World(WorldListener listener) {
-        this.bob = new Bob(5, 1);
+        this.cat = new Cat(5, 1);
         this.platforms = new ArrayList<Platform>();
         this.platformsPositions = new ArrayList<Float>();
         this.springs = new ArrayList<Spring>();
@@ -62,12 +60,12 @@ public class World {
         this.state = WORLD_STATE_RUNNING;
 
         // To set the start position of the cat, we need an x velocity != 0
-        this.bob.velocity.x = 0.1f;
+        this.cat.velocity.x = 0.1f;
     }
 
     private void generateLevel() {
         float y = Platform.PLATFORM_HEIGHT / 2;
-        float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY
+        float maxJumpHeight = Cat.BOB_JUMP_VELOCITY * Cat.BOB_JUMP_VELOCITY
                 / (2 * -gravity.y);
         while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
             int type;
@@ -120,7 +118,7 @@ public class World {
             y -= rand.nextFloat() * (maxJumpHeight / 3);
         }
 
-        castle = new Castle(WORLD_WIDTH / 2, y);
+        blackHole = new BlackHole(WORLD_WIDTH / 2, y);
     }
 
     public void update(float deltaTime, float accelX) {
@@ -129,11 +127,11 @@ public class World {
 //        updateSquirrels(deltaTime);
 //        updateCoins(deltaTime);
         updateScore();
-        if (bob.state != Bob.BOB_STATE_HIT && bob.velocity.y > -25) {
+        if (cat.state != Cat.BOB_STATE_HIT && cat.velocity.y > -25) {
             checkCollisions();
         }
-        if (bob.velocity.y < -25 && !bob.isDead) {
-            bob.isDead = true;
+        if (cat.velocity.y < -25 && !cat.isDead) {
+            cat.isDead = true;
             Assets.nyan1.play();
         }
         updateStars(deltaTime);
@@ -141,12 +139,12 @@ public class World {
     }
 
     private void updateStars(float deltaTime) {
-        if (bob.isDead) {
+        if (cat.isDead) {
             // Update common state time (use for all stars)
             stateTime += deltaTime;
             stars.add(new Star(
-                    (float) (bob.position.x + (Math.random() * 3) - 1.5),
-                    (float) (bob.position.y + (Math.random() * 3) - 1.5),
+                    (float) (cat.position.x + (Math.random() * 3) - 1.5),
+                    (float) (cat.position.y + (Math.random() * 3) - 1.5),
                     Star.STAR_WIDTH, Star.STAR_HEIGHT));
             if (stars.size() > Star.STAR_MAX_COUNT) {
                 stars.remove(0);
@@ -161,7 +159,7 @@ public class World {
 
     private void updateScore() {
         for (int i = 0; i < platformsPositions.size(); ++i) {
-            if (platformsPositions.get(i) > bob.position.y) {
+            if (platformsPositions.get(i) > cat.position.y) {
                 score = i - 1;
                 break;
             }
@@ -172,12 +170,12 @@ public class World {
     }
 
     private void updateBob(float deltaTime, float accelX) {
-        if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f)
-            bob.hitPlatform();
-        if (bob.state != Bob.BOB_STATE_HIT)
-            bob.velocity.x = -accelX / 10 * Bob.BOB_MOVE_VELOCITY;
-        bob.update(deltaTime);
-        heightSoFar = Math.max(bob.position.y, heightSoFar);
+        if (cat.state != Cat.BOB_STATE_HIT && cat.position.y <= 0.5f)
+            cat.hitPlatform();
+        if (cat.state != Cat.BOB_STATE_HIT)
+            cat.velocity.x = -accelX / 10 * Cat.BOB_MOVE_VELOCITY;
+        cat.update(deltaTime);
+        heightSoFar = Math.max(cat.position.y, heightSoFar);
     }
 
     private void updatePlatforms(float deltaTime) {
@@ -217,25 +215,25 @@ public class World {
     }
 
     private void checkPlatformCollisions() {
-//        if (bob.velocity.y == 0)
+//        if (cat.velocity.y == 0)
 //            return;
 
         int len = platforms.size();
         for (int i = 0; i < len; i++) {
             Platform platform = platforms.get(i);
                 if (OverlapTester
-                        .overlapRectangles(bob.bounds, platform.bounds)) {
-                    if (bob.position.y > platform.position.y) {
-                        // Log.e("TRUNGDQ", "UP:       bob y: " + bob.position.y + " | platform y: " + platform.position.y);
-                        bob.position.y = platform.position.y + platform.bounds.height / 2 + bob.bounds.height / 2 - 0.1f;
-                        bob.hitPlatform();
+                        .overlapRectangles(cat.bounds, platform.bounds)) {
+                    if (cat.position.y > platform.position.y) {
+                        // Log.e("TRUNGDQ", "UP:       cat y: " + cat.position.y + " | platform y: " + platform.position.y);
+                        cat.position.y = platform.position.y + platform.bounds.height / 2 + cat.bounds.height / 2 - 0.1f;
+                        cat.hitPlatform();
                         listener.jump();
                         // Destroy after touch
                         platform.pulverize();
-                    } else if (bob.position.y <= platform.position.y) {
-                        // Log.e("TRUNGDQ", "DOWN:     bob y: " + bob.position.y + " | platform y: " + platform.position.y);
-                        bob.position.y = platform.position.y - platform.bounds.height / 2 - bob.bounds.height / 2 - 0.1f;
-                        bob.hitPlatformTop();
+                    } else if (cat.position.y <= platform.position.y) {
+                        // Log.e("TRUNGDQ", "DOWN:     cat y: " + cat.position.y + " | platform y: " + platform.position.y);
+                        cat.position.y = platform.position.y - platform.bounds.height / 2 - cat.bounds.height / 2 - 0.1f;
+                        cat.hitPlatformTop();
                         listener.hitTop();
                     }
                     break;
@@ -247,8 +245,8 @@ public class World {
 //        int len = squirrels.size();
 //        for (int i = 0; i < len; i++) {
 //            Squirrel squirrel = squirrels.get(i);
-//            if (OverlapTester.overlapRectangles(squirrel.bounds, bob.bounds)) {
-//                bob.hitSquirrel();
+//            if (OverlapTester.overlapRectangles(squirrel.bounds, cat.bounds)) {
+//                cat.hitSquirrel();
 //                listener.hit();
 //            }
 //        }
@@ -258,7 +256,7 @@ public class World {
 //        int len = coins.size();
 //        for (int i = 0; i < len; i++) {
 //            Coin coin = coins.get(i);
-//            if (OverlapTester.overlapRectangles(bob.bounds, coin.bounds)) {
+//            if (OverlapTester.overlapRectangles(cat.bounds, coin.bounds)) {
 //                coins.remove(coin);
 //                len = coins.size();
 //                listener.coin();
@@ -266,15 +264,15 @@ public class World {
 //            }
 //        }
 
-        if (bob.velocity.y > 0)
+        if (cat.velocity.y > 0)
             return;
 
         int len = springs.size();
         for (int i = 0; i < len; i++) {
             Spring spring = springs.get(i);
-            if (bob.position.y > spring.position.y - spring.bounds.height / 2) {
-                if (OverlapTester.overlapRectangles(bob.bounds, spring.bounds)) {
-                    bob.hitSpring();
+            if (cat.position.y > spring.position.y - spring.bounds.height / 2) {
+                if (OverlapTester.overlapRectangles(cat.bounds, spring.bounds)) {
+                    cat.hitSpring();
                     listener.highJump();
                 }
             }
@@ -282,16 +280,16 @@ public class World {
     }
 
     private void checkCastleCollisions() {
-        if (OverlapTester.overlapRectangles(castle.bounds, bob.bounds)) {
+        if (OverlapTester.overlapRectangles(blackHole.bounds, cat.bounds)) {
             state = WORLD_STATE_NEXT_LEVEL;
         }
     }
 
     private void checkGameOver() {
-        if (bob.position.y < 0.7f) {
+        if (cat.position.y < 0.7f) {
             state = WORLD_STATE_GAME_OVER;
-            bob.state = Bob.BOB_STATE_HIT;
-            bob.isDead = false;
+            cat.state = Cat.BOB_STATE_HIT;
+            cat.isDead = false;
             stars.clear();
 
             Assets.playSound(Assets.hitSound);

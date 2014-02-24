@@ -247,7 +247,7 @@ public class GameScreen extends GLScreen {
 	    batcher.endBatch();
 	    gl.glDisable(GL10.GL_BLEND);
 	    fpsCounter.logFrame();
-	}
+    }
 	
 	private void presentReady() {
 	    batcher.drawSprite(160, 240, 192, 32, Assets.ready);

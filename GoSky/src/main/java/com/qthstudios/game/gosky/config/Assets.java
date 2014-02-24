@@ -61,9 +61,9 @@ public class Assets {
         if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
             final LazyTexture background = new LazyTexture(mGame, "background.jpg");
 
-//            Thread t = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
 
                     background.contextTopOffset = pos * 480;
                     background.topOffset = BACKGROUND_FULL_HEIGHT - 480 - pos * 480;
@@ -72,9 +72,9 @@ public class Assets {
                     backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
 
                     Log.e("TRUNGDQ", "load pos true: " + pos);
-//                }
-//            });
-//            t.start();
+                }
+            });
+            t.start();
             return true;
         } else {
 

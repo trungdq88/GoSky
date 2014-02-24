@@ -26,10 +26,10 @@ public class WorldRenderer {
     }
 
     public void render() {
-        if(world.bob.position.y > cam.position.y)
-            cam.position.y = world.bob.position.y;
-        if (world.bob.position.y < cam.position.y - 6) {
-            cam.position.y = world.bob.position.y + 6;
+        if(world.cat.position.y > cam.position.y)
+            cam.position.y = world.cat.position.y;
+        if (world.cat.position.y < cam.position.y - 6) {
+            cam.position.y = world.cat.position.y + 6;
         }
         cam.setViewportAndMatrices();
         renderBackground();
@@ -76,47 +76,47 @@ public class WorldRenderer {
 
     private void renderBob() {
         TextureRegion keyFrame;
-        switch(world.bob.state) {
-            case Bob.BOB_STATE_FALL:
-                keyFrame = Assets.bobFall.getKeyFrame(world.bob.stateTime, Animation.ANIMATION_LOOPING);
+        switch(world.cat.state) {
+            case Cat.BOB_STATE_FALL:
+                keyFrame = Assets.bobFall.getKeyFrame(world.cat.stateTime, Animation.ANIMATION_LOOPING);
                 break;
-            case Bob.BOB_STATE_JUMP:
-                keyFrame = Assets.bobJump.getKeyFrame(world.bob.stateTime, Animation.ANIMATION_LOOPING);
+            case Cat.BOB_STATE_JUMP:
+                keyFrame = Assets.bobJump.getKeyFrame(world.cat.stateTime, Animation.ANIMATION_LOOPING);
                 break;
-            case Bob.BOB_STATE_HIT:
+            case Cat.BOB_STATE_HIT:
             default:
                 keyFrame = Assets.bobHit;
         }
         float side = 1;
-        if (Math.abs(world.bob.velocity.x) > 0.5) {
-            side = world.bob.velocity.x < 0 ? -1: 1;
+        if (Math.abs(world.cat.velocity.x) > 0.5) {
+            side = world.cat.velocity.x < 0 ? -1: 1;
         }
 
-        double r = Math.abs(world.bob.velocity.y / world.bob.velocity.x);
+        double r = Math.abs(world.cat.velocity.y / world.cat.velocity.x);
 
         float angle = 0;
-        if (world.bob.velocity.y > 0 && world.bob.velocity.x > 0) {
+        if (world.cat.velocity.y > 0 && world.cat.velocity.x > 0) {
             angle = (float) Math.toDegrees(Math.atan(r)) ;
         }
 
-        if (world.bob.velocity.y > 0 && world.bob.velocity.x < 0) {
+        if (world.cat.velocity.y > 0 && world.cat.velocity.x < 0) {
             angle = (float) (90 +  Math.toDegrees(Math.atan(1 / r)));
         }
 
-        if (world.bob.velocity.y < 0 && world.bob.velocity.x > 0) {
+        if (world.cat.velocity.y < 0 && world.cat.velocity.x > 0) {
             angle = - (float) Math.toDegrees(Math.atan(r));
         }
 
-        if (world.bob.velocity.y < 0 && world.bob.velocity.x < 0) {
+        if (world.cat.velocity.y < 0 && world.cat.velocity.x < 0) {
             angle = (float) (- 90 - Math.toDegrees(Math.atan(1 / r)));
         }
 
-        if (world.bob.velocity.x == 0) {
-            angle = 90 * (world.bob.velocity.y > 0 ? 1 : -1);
+        if (world.cat.velocity.x == 0) {
+            angle = 90 * (world.cat.velocity.y > 0 ? 1 : -1);
         }
 
         // angle += 45* side;
-        batcher.drawSprite(world.bob.position.x, world.bob.position.y, 1.3f , side * 1.3f, angle, keyFrame);
+        batcher.drawSprite(world.cat.position.x, world.cat.position.y, 1.3f , side * 1.3f, angle, keyFrame);
     }
 
     private void renderPlatforms() {
@@ -159,8 +159,8 @@ public class WorldRenderer {
 //    }
 
     private void renderCastle() {
-        Castle castle = world.castle;
-        batcher.drawSprite(castle.position.x, castle.position.y, 2, 2, Assets.castle);
+        BlackHole blackHole = world.blackHole;
+        batcher.drawSprite(blackHole.position.x, blackHole.position.y, 2, 2, Assets.castle);
     }
 }
 

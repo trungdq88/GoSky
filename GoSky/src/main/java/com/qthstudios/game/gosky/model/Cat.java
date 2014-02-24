@@ -2,7 +2,7 @@ package com.qthstudios.game.gosky.model;
 
 import com.qthstudios.game.gosky.framework.DynamicGameObject;
 
-public class Bob extends DynamicGameObject {
+public class Cat extends DynamicGameObject {
     public static final int BOB_STATE_JUMP = 0;
     public static final int BOB_STATE_FALL = 1;
     public static final int BOB_STATE_HIT = 2;
@@ -15,7 +15,7 @@ public class Bob extends DynamicGameObject {
     float stateTime;
     public boolean isDead = false;
 
-    public Bob(float x, float y) {
+    public Cat(float x, float y) {
         super(x, y, BOB_WIDTH, BOB_HEIGHT);
         state = BOB_STATE_FALL;
         stateTime = 0;
