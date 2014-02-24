@@ -10,8 +10,12 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.qthstudios.game.gosky.framework.Audio;
 import com.qthstudios.game.gosky.framework.FileIO;
@@ -19,6 +23,7 @@ import com.qthstudios.game.gosky.framework.Game;
 import com.qthstudios.game.gosky.framework.Graphics;
 import com.qthstudios.game.gosky.framework.Input;
 import com.qthstudios.game.gosky.framework.Screen;
+import com.qthstudios.game.gosky.R;
 
 public abstract class GLGame extends Activity implements Game, Renderer {
     enum GLGameState {
@@ -48,7 +53,13 @@ public abstract class GLGame extends Activity implements Game, Renderer {
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
         glView = new GLSurfaceView(this);
         glView.setRenderer(this);
-        setContentView(glView);
+        // setContentView(glView);
+
+        // SurfaceView gameScreen = (SurfaceView) findViewById(R.id.gameScreen);
+        setContentView(R.layout.main_activity);
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.mainLayout);
+        layout.addView(glView);
+
         
         glGraphics = new GLGraphics(glView);
         fileIO = new AndroidFileIO(getAssets());

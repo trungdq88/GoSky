@@ -53,13 +53,16 @@ public class World {
         this.platforms = new ArrayList<Platform>();
         this.platformsPositions = new ArrayList<Float>();
         this.springs = new ArrayList<Spring>();
-        stars = new ArrayList<Star>();
+        this.stars = new ArrayList<Star>();
         this.listener = listener;
-        rand = new Random();
+        this.rand = new Random();
         generateLevel();
         this.heightSoFar = 0;
         this.score = 0;
         this.state = WORLD_STATE_RUNNING;
+
+        // To set the start position of the cat, we need an x velocity != 0
+        this.bob.velocity.x = 0.1f;
     }
 
     private void generateLevel() {
@@ -141,22 +144,13 @@ public class World {
         if (bob.isDead) {
             // Update common state time (use for all stars)
             stateTime += deltaTime;
-//            Log.e("TRUNGDQ", "stateTime: " + stateTime + " first con: " + ((int) stateTime % Star.STAR_SPEED));
-            // Add new stars
-//            if ((int) (stateTime * 100) % Star.STAR_SPEED == 0 && !starAddedFlag) {
-//                starAddedFlag = true;
-                stars.add(new Star(
-                        (float) (bob.position.x + (Math.random() * 3) - 1.5),
-                        (float) (bob.position.y + (Math.random() * 3) - 1.5),
-                        Star.STAR_WIDTH, Star.STAR_HEIGHT));
-                if (stars.size() > Star.STAR_MAX_COUNT) {
-                    stars.remove(0);
-                }
-//            } else {
-//                if ((int) (stateTime * 100) % Star.STAR_SPEED != 0) {
-//                starAddedFlag = false;
-//                }
-//            }
+            stars.add(new Star(
+                    (float) (bob.position.x + (Math.random() * 3) - 1.5),
+                    (float) (bob.position.y + (Math.random() * 3) - 1.5),
+                    Star.STAR_WIDTH, Star.STAR_HEIGHT));
+            if (stars.size() > Star.STAR_MAX_COUNT) {
+                stars.remove(0);
+            }
 
             // Update stars state time;
             for (Star star : stars) {
@@ -232,14 +226,14 @@ public class World {
                 if (OverlapTester
                         .overlapRectangles(bob.bounds, platform.bounds)) {
                     if (bob.position.y > platform.position.y) {
-                        Log.e("TRUNGDQ", "UP:       bob y: " + bob.position.y + " | platform y: " + platform.position.y);
+                        // Log.e("TRUNGDQ", "UP:       bob y: " + bob.position.y + " | platform y: " + platform.position.y);
                         bob.position.y = platform.position.y + platform.bounds.height / 2 + bob.bounds.height / 2 - 0.1f;
                         bob.hitPlatform();
                         listener.jump();
                         // Destroy after touch
                         platform.pulverize();
                     } else if (bob.position.y <= platform.position.y) {
-                        Log.e("TRUNGDQ", "DOWN:     bob y: " + bob.position.y + " | platform y: " + platform.position.y);
+                        // Log.e("TRUNGDQ", "DOWN:     bob y: " + bob.position.y + " | platform y: " + platform.position.y);
                         bob.position.y = platform.position.y - platform.bounds.height / 2 - bob.bounds.height / 2 - 0.1f;
                         bob.hitPlatformTop();
                         listener.hitTop();

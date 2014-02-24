@@ -203,9 +203,9 @@ public class GameScreen extends GLScreen {
 	    int len = touchEvents.size();
 	    for(int i = 0; i < len; i++) {
             try {
-	        TouchEvent event = touchEvents.get(i);
-	        if(event.type != TouchEvent.TOUCH_UP)
-	            continue;
+                TouchEvent event = touchEvents.get(i);
+                if(event.type != TouchEvent.TOUCH_UP)
+                    continue;
 	        game.setScreen(new MainScreen(game));
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

@@ -23,6 +23,9 @@ public class Assets {
     private static List<LazyTexture> backgrounds = new ArrayList<LazyTexture>();
     public static List<LazyTextureRegion> backgroundRegions = new ArrayList<LazyTextureRegion>();
 
+    public static Texture splashScreenTexture;
+    public static TextureRegion splashScreen;
+
     public static Texture items;
     public static TextureRegion mainMenu;
     public static TextureRegion pauseMenu;
@@ -58,13 +61,20 @@ public class Assets {
         if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
             final LazyTexture background = new LazyTexture(mGame, "background.jpg");
 
-            background.contextTopOffset = pos * 480;
-            background.topOffset = BACKGROUND_FULL_HEIGHT - 480 - pos * 480;
-            background.reload();
-            backgrounds.add(background);
-            backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+//            Thread t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
 
-            Log.e("TRUNGDQ", "load pos true: " + pos);
+                    background.contextTopOffset = pos * 480;
+                    background.topOffset = BACKGROUND_FULL_HEIGHT - 480 - pos * 480;
+                    background.reload();
+                    backgrounds.add(background);
+                    backgroundRegions.add(new LazyTextureRegion(background, 0, 0, 320, 480));
+
+                    Log.e("TRUNGDQ", "load pos true: " + pos);
+//                }
+//            });
+//            t.start();
             return true;
         } else {
 
@@ -74,12 +84,15 @@ public class Assets {
 
     }
 
+    public static void loadSplashScreen(GLGame game) {
+        Log.e("TRUNGDQ", "load splash screen");
+        splashScreenTexture = new Texture(game, "background1.jpg");
+        splashScreen = new TextureRegion(splashScreenTexture, 0, 0, 320, 480);
+    }
+
     public static void load(GLGame game) {
         mGame = game;
 
-        for (int i = 0; i < 3; ++i) {
-            loadBackground(i);
-        }
 
         items = new Texture(game, "items.png");
         mainMenu = new TextureRegion(items, 45, 255, 209, 59);
@@ -143,7 +156,13 @@ public class Assets {
                 nyan2.play();
             }
         });
+
+        // Big things come last
+        for (int i = 0; i < 2; ++i) {
+            loadBackground(i);
+        }
     }
+
 
     public static void reload() {
         for (LazyTexture background : backgrounds) {
@@ -153,7 +172,11 @@ public class Assets {
     }
 
     public static void playSound(Sound sound) {
-        if (Settings.soundEnabled)
-            sound.play(1);
+        try {
+            if (Settings.soundEnabled)
+                sound.play(1);
+        } catch (NullPointerException e) {
+            // Sound is not loaded yet
+        }
     }
 }

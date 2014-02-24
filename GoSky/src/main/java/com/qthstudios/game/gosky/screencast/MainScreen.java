@@ -90,19 +90,20 @@ public class MainScreen extends GLScreen {
             batcher.beginBatch(Assets.backgroundRegions.get(0).texture);
             batcher.drawSprite(160, 240, 320, 480, Assets.backgroundRegions.get(0));
             batcher.endBatch();
-        }
+        } // else { background is not loaded yet }
 
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        if (Assets.items != null) {
+            batcher.beginBatch(Assets.items);
 
-        batcher.beginBatch(Assets.items);
+            batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
+            batcher.drawSprite(160, 200 + (isPlayButtonPressing ? -3 : 0), 209, 59, Assets.mainMenu);
+            batcher.drawSprite(160, 40 + (isScoreButtonPressing ? -2 : 0), 209, 32, Assets.highScoresRegion);
+            // batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
 
-        batcher.drawSprite(160, 480 - 10 - 71, 274, 142, Assets.logo);
-        batcher.drawSprite(160, 200 + (isPlayButtonPressing ? -3 : 0), 209, 59, Assets.mainMenu);
-        batcher.drawSprite(160, 40 + (isScoreButtonPressing ? -2 : 0), 209, 32, Assets.highScoresRegion);
-        // batcher.drawSprite(32, 32, 64, 64, Settings.soundEnabled?Assets.soundOn:Assets.soundOff);
-
-        batcher.endBatch();
+            batcher.endBatch();
+        } // else { items isnot loaded yet }
 
         gl.glDisable(GL10.GL_BLEND);
     }
