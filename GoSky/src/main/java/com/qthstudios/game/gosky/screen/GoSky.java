@@ -52,6 +52,7 @@ public class GoSky extends GLGame implements BannerController{
         super.onPause();
         Log.e("TRUNGDQ", "Pause game");
         startAppAd.onPause();
+        System.exit(0);
     }
 
     @Override
@@ -109,6 +110,8 @@ public class GoSky extends GLGame implements BannerController{
 
     @Override
     public void onBackPressed() {
-        // no accidentally exit app
+        super.onBackPressed();
+        startAppAd.onBackPressed();
+        System.exit(0);
     }
 }
