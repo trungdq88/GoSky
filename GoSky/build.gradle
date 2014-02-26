@@ -22,10 +22,19 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        releaseConfig {
+            storeFile file("gosky-key.jks")
+            storePassword "123456"
+            keyAlias "QTHSTUDIO"
+            keyPassword "123456"
+        }
+    }
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.releaseConfig
         }
     }
 }

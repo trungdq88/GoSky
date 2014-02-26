@@ -17,7 +17,7 @@ public class Platform extends DynamicGameObject {
     public static final float PLATFORM_VELOCITY_MIN = 1;
     public static final float PLATFORM_VELOCITY_MAX = 3;
     public static final float PLATFORM_TYPE_SPRING_PERCENT = 0f;
-    public static final float PLATFORM_TYPE_MOVING_PERCENT = 0.2f;
+    public static final float PLATFORM_TYPE_MOVING_PERCENT = 0.1f;
 
     int type;
     int state;
@@ -54,7 +54,7 @@ public class Platform extends DynamicGameObject {
     public void pulverize() {
         state = PLATFORM_STATE_PULVERIZING;
         stateTime = 0;
-        velocity.x = 0;
+        // velocity.x = 0;
     }
 }
 

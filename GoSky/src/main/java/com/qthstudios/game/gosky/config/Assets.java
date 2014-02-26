@@ -10,13 +10,14 @@ import com.qthstudios.game.gosky.framework.gl.LazyTexture;
 import com.qthstudios.game.gosky.framework.gl.LazyTextureRegion;
 import com.qthstudios.game.gosky.framework.gl.Texture;
 import com.qthstudios.game.gosky.framework.gl.TextureRegion;
+import com.qthstudios.game.gosky.framework.impl.AndroidSound;
 import com.qthstudios.game.gosky.framework.impl.GLGame;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Assets {
-    private static int BACKGROUND_FULL_HEIGHT = 48000;
+    private static int BACKGROUND_FULL_HEIGHT = 24000;
 //    private static int BACKGROUND_FULL_HEIGHT = 1440;
 
     public static GLGame mGame;
@@ -40,7 +41,6 @@ public class Assets {
     public static TextureRegion pause;
     public static TextureRegion spring;
     public static TextureRegion castle;
-    public static Animation coinAnim;
     public static Animation bobJump;
     public static Animation bobFall;
     public static TextureRegion bobHit;
@@ -57,6 +57,7 @@ public class Assets {
     public static Sound clickSound;
     public static Music nyan2;
     public static Music nyan1;
+    public static Sound coinSound;
 
     public static boolean loadBackground(final int pos) {
         if (pos >= backgroundRegions.size() && (BACKGROUND_FULL_HEIGHT - 480 - pos * 480 >= 0)) {
@@ -110,11 +111,6 @@ public class Assets {
 
         spring = new TextureRegion(items, 128, 0, 32, 32);
         castle = new TextureRegion(items, 128, 64, 64, 64);
-        coinAnim = new Animation(0.2f,
-                new TextureRegion(items, 128, 32, 32, 32),
-                new TextureRegion(items, 160, 32, 32, 32),
-                new TextureRegion(items, 192, 32, 32, 32),
-                new TextureRegion(items, 160, 32, 32, 32));
         bobJump = new Animation(0.2f,
                 new TextureRegion(items, 0, 128, 32, 32),
                 new TextureRegion(items, 32, 128, 32, 32));
@@ -142,6 +138,7 @@ public class Assets {
         font = new Font(items, 225, 0, 16, 16, 20);
 
         jumpSound = game.getAudio().newSound("jump.ogg");
+        coinSound = game.getAudio().newSound("coin.ogg");
         highJumpSound = game.getAudio().newSound("highjump.ogg");
         hitSound = game.getAudio().newSound("hit.ogg");
         hitTopSound = game.getAudio().newSound("hittop.wav");

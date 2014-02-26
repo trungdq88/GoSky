@@ -1,5 +1,7 @@
 package com.qthstudios.game.gosky.screencast;
 
+import android.util.Log;
+
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.config.Settings;
 import com.qthstudios.game.gosky.framework.Game;
@@ -37,6 +39,7 @@ public class GameScreen extends GLScreen {
     WorldRenderer renderer;
     Rectangle pauseBounds;
     Rectangle resumeBounds;
+    Rectangle treasureBounds;
     int lastScore;
     String scoreString;    
     FPSCounter fpsCounter;
@@ -85,6 +88,7 @@ public class GameScreen extends GLScreen {
         renderer = new WorldRenderer(glGraphics, batcher, world);
         pauseBounds = new Rectangle(320- 64, 480- 64, 64, 64);
         resumeBounds = new Rectangle(160 - 96, 200, 192, 72);
+        treasureBounds = new Rectangle(160, 480 - 20, 20,20);
         lastScore = 0;
         scoreString = "0";
         fpsCounter = new FPSCounter();
@@ -113,8 +117,8 @@ public class GameScreen extends GLScreen {
 	        break;
 	    }
 	}
-	
-	private void updateReady() {
+
+    private void updateReady() {
 	    if(game.getInput().getTouchEvents().size() > 0) {
 	        state = GAME_RUNNING;
             ((BannerController)_game).hideBanner();
@@ -142,7 +146,12 @@ public class GameScreen extends GLScreen {
                 }
 	            state = GAME_PAUSED;
 	            return;
-	        }            
+	        }
+
+            if(OverlapTester.pointInRectangle(treasureBounds, touchPoint)) {
+                Assets.playSound(Assets.coinSound);
+                return;
+            }
 	    }
 	    
 	    world.update(deltaTime, game.getInput().getAccelX());
