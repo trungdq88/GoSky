@@ -18,9 +18,8 @@ allprojects {
 
 dependencies {
     // compile 'com.android.support:appcompat-v7:21.0.0'
-    compile files('libs/google-analytics/libGoogleAnalyticsServices.jar')
-    compile files('libs/startapp/StartAppCommon-1.0.1.jar')
-    compile files('libs/startapp/StartAppInApp-2.2.0.jar')
+
+    compile fileTree(dir: 'libs', include: '*.jar')
 
 }
 
