@@ -152,6 +152,11 @@ public class GameScreen extends GLScreen {
                 Assets.playSound(Assets.coinSound);
                 return;
             }
+
+            // If the cat is dead, single tap will immediately stop the falling
+            if (world.cat.isDead) {
+                world.cat.position.y = 0;
+            }
 	    }
 	    
 	    world.update(deltaTime, game.getInput().getAccelX());
