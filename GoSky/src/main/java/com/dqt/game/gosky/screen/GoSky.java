@@ -86,6 +86,7 @@ public class GoSky extends GLGame implements BannerController{
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("0F82DF5F69AF00607A52105AD1C04E72")
                 .build();
         mAdView.loadAd(adRequest);
 
@@ -94,7 +95,9 @@ public class GoSky extends GLGame implements BannerController{
         interstitial.setAdUnitId(getString(R.string.int_ad_unit_id));
 
         // Create ad request.
-        AdRequest adRequest2 = new AdRequest.Builder().build();
+        AdRequest adRequest2 = new AdRequest.Builder()
+                .addTestDevice("0F82DF5F69AF00607A52105AD1C04E72")
+                .build();
 
         // Begin loading your interstitial.
         interstitial.loadAd(adRequest2);
