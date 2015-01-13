@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.qthstudios.game.gosky.R;
 import com.qthstudios.game.gosky.config.Assets;
 import com.qthstudios.game.gosky.config.Settings;
@@ -15,9 +18,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GoSky extends GLGame implements BannerController{
-    public final String DEV_ID = "101352520";
-    public final String APP_ID = "202676613";
     public boolean firstTimeCreate = true;
+    private AdView mAdView;
+    private InterstitialAd interstitial;
 
     @Override
     public Screen getStartScreen() {
@@ -45,6 +48,9 @@ public class GoSky extends GLGame implements BannerController{
 
     @Override
     public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
         super.onPause();
         Log.e("TRUNGDQ", "Pause game");
 
@@ -55,7 +61,9 @@ public class GoSky extends GLGame implements BannerController{
     public void onResume() {
         super.onResume();
         Log.e("TRUNGDQ", "Resume game");
-
+        if (mAdView != null) {
+            mAdView.resume();
+        }
     }
 
     @Override
@@ -75,6 +83,21 @@ public class GoSky extends GLGame implements BannerController{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+
+        // Create the interstitial.
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId(getString(R.string.int_ad_unit_id));
+
+        // Create ad request.
+        AdRequest adRequest2 = new AdRequest.Builder().build();
+
+        // Begin loading your interstitial.
+        interstitial.loadAd(adRequest2);
     }
 
     @Override
@@ -101,8 +124,20 @@ public class GoSky extends GLGame implements BannerController{
     }
 
     @Override
+    protected void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
         System.exit(0);
     }
+
 }

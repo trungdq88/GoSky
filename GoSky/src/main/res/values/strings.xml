@@ -4,5 +4,6 @@
     <string name="app_name">Go Sky</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="banner_ad_unit_id">ca-app-pub-4299164781315902/5058695476</string>
+    <string name="int_ad_unit_id">ca-app-pub-4299164781315902/3302760672</string>
 </resources>
