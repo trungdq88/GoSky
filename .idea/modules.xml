@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GoSky.iml" filepath="$PROJECT_DIR$/GoSky.iml" />
-      <module fileurl="file://$PROJECT_DIR$/gosky/gosky.iml" filepath="$PROJECT_DIR$/gosky/gosky.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GoSky/gosky.iml" filepath="$PROJECT_DIR$/GoSky/gosky.iml" />
     </modules>
   </component>
 </project>

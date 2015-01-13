@@ -1,20 +1,32 @@
+apply plugin: 'android'
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.12.2'
     }
 }
-apply plugin: 'android'
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+
+dependencies {
+    // compile 'com.android.support:appcompat-v7:21.0.0'
+    compile files('libs/google-analytics/libGoogleAnalyticsServices.jar')
+    compile files('libs/startapp/StartAppCommon-1.0.1.jar')
+    compile files('libs/startapp/StartAppInApp-2.2.0.jar')
+
 }
 
 android {
     compileSdkVersion 18
-    buildToolsVersion "18.1.1"
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         minSdkVersion 9
@@ -22,27 +34,10 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    signingConfigs {
-        releaseConfig {
-            storeFile file("gosky-key.jks")
-            storePassword "123456"
-            keyAlias "QTHSTUDIO"
-            keyPassword "123456"
-        }
-    }
     buildTypes {
         release {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.releaseConfig
         }
     }
-}
-
-dependencies {
-    compile 'com.android.support:appcompat-v7:+'
-    compile files('libs/google-analytics/libGoogleAnalyticsServices.jar')
-    compile files('libs/startapp/StartAppCommon-1.0.1.jar')
-    compile files('libs/startapp/StartAppInApp-2.2.0.jar')
-
 }
